@@ -17,7 +17,7 @@
           "caption": "Houston's mother and Gospel singer, Cissy Houston (left) and cousin Dionne Warwick.",
           "credit": "Cissy Houston photo:<a href='http://www.flickr.com/photos/11447043@N00/418180903/'>Tom Marcello</a><br/><a href='http://commons.wikimedia.org/wiki/File%3ADionne_Warwick_television_special_1969.JPG'>Dionne Warwick: CBS Television via Wikimedia Commons</a>"
         },
-        "eventDate": {
+        "start_date": {
           "month": "8",
           "day": "9",
           "year": "1963"
@@ -33,7 +33,7 @@
           "caption": "",
           "credit": "<a href=\"http://unidiscmusic.com\">Unidisc Music</a>"
         },
-        "eventDate": {
+        "start_date": {
           "year": "1978"
         },
         "text": {
@@ -47,7 +47,7 @@
           "caption": "A young poised Whitney Houston in an interview with EbonyJet.",
           "credit": "EbonyJet"
         },
-        "eventDate": {
+        "start_date": {
           "year": "1978"
         },
         "text": {
@@ -61,7 +61,7 @@
           "caption": "I'm Every Women as performed by Whitney Houston.",
           "credit": "Arista Records"
         },
-        "eventDate": {
+        "start_date": {
           "year": "1978"
         },
         "text": {
@@ -75,7 +75,7 @@
           "caption": "Whitney Houston and Clive Davis discussing her discovery and her eponymous first album.",
           "credit": "Sony Music Entertainment"
         },
-        "eventDate": {
+        "start_date": {
           "year": "1983"
         },
         "text": {
@@ -89,7 +89,7 @@
           "caption": "The 'How Will I Know' video showcases the youthful energy that boosted Houston to stardom.",
           "credit": "Arista Records Inc."
         },
-        "eventDate": {
+        "start_date": {
           "year": "1985"
         },
         "text": {
@@ -103,7 +103,7 @@
           "caption": "Dionne Warwick gleefully announces cousin, Whitney Houston, the winner of the Best Female Pop Vocal Performance for the song Saving All My Love.",
           "credit": "<a href='http://grammy.org'>The Recording Academy</a>"
         },
-        "eventDate": {
+        "start_date": {
           "year": "1986"
         },
         "text": {
@@ -117,7 +117,7 @@
           "caption": "I Wanna Dance With Somebody",
           "credit": "Arista Records Inc."
         },
-        "eventDate": {
+        "start_date": {
           "year": "1987"
         },
         "text": {
@@ -131,7 +131,7 @@
           "caption": "\"One Moment In Time\" - Theme song to the 1988 Seoul Olympics",
           "credit": "Arista Records Inc."
         },
-        "eventDate": {
+        "start_date": {
           "year": "1988"
         },
         "text": {
@@ -145,7 +145,7 @@
           "caption": "",
           "credit": ""
         },
-        "eventDate": {
+        "start_date": {
           "year": "1989"
         },
         "text": {
@@ -159,7 +159,7 @@
           "caption": "CNN looks back at Houston's iconic performance of the national anthem at Superbowl XXV.",
           "credit": "CNN"
         },
-        "eventDate": {
+        "start_date": {
           "year": "1991"
         },
         "text": {
@@ -173,7 +173,7 @@
           "caption": "\"Run To You\" from the 1992 \"Bodyguard\" soundtrack..",
           "credit": "Arista Records"
         },
-        "eventDate": {
+        "start_date": {
           "year": "1992"
         },
         "text": {
@@ -187,7 +187,7 @@
           "caption": "Bobby Brown performing \"My Prerogrative,\" from his \"Don't be Cruel\" solo album. Bobby Brown first became famous with the R&B group, New Edition.",
           "credit": ""
         },
-        "eventDate": {
+        "start_date": {
           "year": "1992"
         },
         "text": {
@@ -201,7 +201,7 @@
           "caption": "Diane Sawyer ",
           "credit": "flickr/<a href='http://www.flickr.com/photos/23843757@N00/194521206/'>Amanda Benham</a>"
         },
-        "eventDate": {
+        "start_date": {
           "year": "2002"
         },
         "text": {
@@ -215,7 +215,7 @@
           "caption": "Addiction expert, Dr. Drew, talks about Whitney's death and her struggle with addiction.",
           "credit": "CNN"
         },
-        "eventDate": {
+        "start_date": {
           "year": "2004"
         },
         "text": {
@@ -229,7 +229,7 @@
           "caption": "",
           "credit": ""
         },
-        "eventDate": {
+        "start_date": {
           "year": "2005"
         },
         "text": {
@@ -243,7 +243,7 @@
           "caption": "",
           "credit": ""
         },
-        "eventDate": {
+        "start_date": {
           "year": "2010"
         },
         "text": {
@@ -257,7 +257,7 @@
           "caption": "Houston, performing on Good Morning America in 2009.",
           "credit": "<a href='http://commons.wikimedia.org/wiki/File%3AFlickr_Whitney_Houston_performing_on_GMA_2009_4.jpg'>Asterio Tecson</a> via Wikimedia"
         },
-        "eventDate": {
+        "start_date": {
           "month": "2",
           "day": "11",
           "year": "2012"
