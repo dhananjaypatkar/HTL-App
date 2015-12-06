@@ -8,5 +8,6 @@ package com.healthline.common;
  *
  */
 public enum Status {
-	SUCCESS
+	SUCCESS,
+	ERROR
 }
