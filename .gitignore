@@ -46,3 +46,4 @@ Temporary Items
 target
 .classpath
 .project
+*.log
