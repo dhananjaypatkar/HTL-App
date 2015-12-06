@@ -25,7 +25,7 @@ public class TimelineRestServiceImpl implements ITimelineRestService {
 	@GET
 	@Override
 	public String createTimeline() {
-		return "{\"success\" : \"true\"}";
+		return "{ \"success\" : \"true\" }";
 	}
 
 	/* (non-Javadoc)
@@ -35,7 +35,7 @@ public class TimelineRestServiceImpl implements ITimelineRestService {
 	@GET
 	@Override
 	public String addEventToTimeLine() {
-		return "{\"success\" : \"true\"}";
+		return "{ \"success\" : \"true\" }";
 	}
 
 	/* (non-Javadoc)
