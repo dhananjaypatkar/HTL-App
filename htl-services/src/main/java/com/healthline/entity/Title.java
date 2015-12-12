@@ -3,49 +3,55 @@ package com.healthline.entity;
 /**
  * 
  * @author 212473687
- *
+ * 
  */
-public class Title {
+public class Title
+{
 
-	private Media media;
-	private Description text;
+    private Media       media;
+    private Description text;
 
-	public Title() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	/**
-	 * 
-	 * @return The media
-	 */
-	public Media getMedia() {
-		return media;
-	}
+    public Title()
+    {
+        // TODO Auto-generated constructor stub
+    }
 
-	/**
-	 * 
-	 * @param media
-	 *            The media
-	 */
-	public void setMedia(Media media) {
-		this.media = media;
-	}
+    /**
+     * 
+     * @return The media
+     */
+    public Media getMedia()
+    {
+        return media;
+    }
 
-	/**
-	 * 
-	 * @return The text
-	 */
-	public Description getText() {
-		return text;
-	}
+    /**
+     * 
+     * @param media
+     *            The media
+     */
+    public void setMedia(Media media)
+    {
+        this.media = media;
+    }
 
-	/**
-	 * 
-	 * @param text
-	 *            The text
-	 */
-	public void setText(Description text) {
-		this.text = text;
-	}
+    /**
+     * 
+     * @return The text
+     */
+    public Description getText()
+    {
+        return text;
+    }
+
+    /**
+     * 
+     * @param text
+     *            The text
+     */
+    public void setText(Description text)
+    {
+        this.text = text;
+    }
 
 }

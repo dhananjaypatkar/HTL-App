@@ -3,13 +3,22 @@
  */
 package com.healthline.services.rest.api;
 
+import javax.ws.rs.core.Response;
+
+import com.healthline.entity.User;
+
 /**
  * @author Aniket
- *
+ * 
  */
-public interface IUserRestService {
+public interface IUserRestService
+{
 
-	String createUser();
-	
-	String deleteUser();
+    Response createNewUser(User user);
+
+    Response getUser(String userId);
+
+    Response updateUser(User user);
+
+    Response deleteUser(String userId);
 }

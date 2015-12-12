@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.healthline.services.api;
+package com.healthline.dao.api;
 
 import com.healthline.entity.User;
 
@@ -9,7 +9,7 @@ import com.healthline.entity.User;
  * @author Aniket
  * 
  */
-public interface IUserService
+public interface IUserServiceDao
 {
 
     User createNewUser(User user);
@@ -19,5 +19,4 @@ public interface IUserService
     User updateUser(User user);
 
     boolean deleteUser(String userId);
-
 }

@@ -3,67 +3,75 @@ package com.healthline.entity;
 /**
  * 
  * @author 212473687
- *
+ * 
  */
-public class EventDate {
+public class EventDate
+{
 
-	private String month;
-	private String day;
-	private String year;
+    private String month;
+    private String day;
+    private String year;
 
-	public EventDate() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	/**
-	 * 
-	 * @return The month
-	 */
-	public String getMonth() {
-		return month;
-	}
+    public EventDate()
+    {
+        // TODO Auto-generated constructor stub
+    }
 
-	/**
-	 * 
-	 * @param month
-	 *            The month
-	 */
-	public void setMonth(String month) {
-		this.month = month;
-	}
+    /**
+     * 
+     * @return The month
+     */
+    public String getMonth()
+    {
+        return month;
+    }
 
-	/**
-	 * 
-	 * @return The day
-	 */
-	public String getDay() {
-		return day;
-	}
+    /**
+     * 
+     * @param month
+     *            The month
+     */
+    public void setMonth(String month)
+    {
+        this.month = month;
+    }
 
-	/**
-	 * 
-	 * @param day
-	 *            The day
-	 */
-	public void setDay(String day) {
-		this.day = day;
-	}
+    /**
+     * 
+     * @return The day
+     */
+    public String getDay()
+    {
+        return day;
+    }
 
-	/**
-	 * 
-	 * @return The year
-	 */
-	public String getYear() {
-		return year;
-	}
+    /**
+     * 
+     * @param day
+     *            The day
+     */
+    public void setDay(String day)
+    {
+        this.day = day;
+    }
 
-	/**
-	 * 
-	 * @param year
-	 *            The year
-	 */
-	public void setYear(String year) {
-		this.year = year;
-	}
+    /**
+     * 
+     * @return The year
+     */
+    public String getYear()
+    {
+        return year;
+    }
+
+    /**
+     * 
+     * @param year
+     *            The year
+     */
+    public void setYear(String year)
+    {
+        this.year = year;
+    }
 
 }

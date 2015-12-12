@@ -6,48 +6,54 @@ import java.util.List;
 /**
  * 
  * @author 212473687
- *
+ * 
  */
-public class Timeline {
+public class Timeline
+{
 
-	private Title title;
-	private List<Event> events = new ArrayList<Event>();
+    private Title       title;
+    private List<Event> events = new ArrayList<Event>();
 
-	public Timeline() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	/**
-	 * 
-	 * @return The title
-	 */
-	public Title getTitle() {
-		return title;
-	}
+    public Timeline()
+    {
+        // TODO Auto-generated constructor stub
+    }
 
-	/**
-	 * 
-	 * @param title
-	 *            The title
-	 */
-	public void setTitle(Title title) {
-		this.title = title;
-	}
+    /**
+     * 
+     * @return The title
+     */
+    public Title getTitle()
+    {
+        return title;
+    }
 
-	/**
-	 * 
-	 * @return The events
-	 */
-	public List<Event> getEvents() {
-		return events;
-	}
+    /**
+     * 
+     * @param title
+     *            The title
+     */
+    public void setTitle(Title title)
+    {
+        this.title = title;
+    }
 
-	/**
-	 * 
-	 * @param events
-	 *            The events
-	 */
-	public void setEvents(List<Event> events) {
-		this.events = events;
-	}
+    /**
+     * 
+     * @return The events
+     */
+    public List<Event> getEvents()
+    {
+        return events;
+    }
+
+    /**
+     * 
+     * @param events
+     *            The events
+     */
+    public void setEvents(List<Event> events)
+    {
+        this.events = events;
+    }
 }

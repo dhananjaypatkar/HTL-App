@@ -5,9 +5,16 @@ package com.healthline.common;
 
 /**
  * @author Aniket
- *
+ * 
  */
-public enum Status {
-	SUCCESS,
-	ERROR
+public enum Status
+{
+    /**
+	 * 
+	 */
+    SUCCESS,
+    /**
+	 * 
+	 */
+    ERROR
 }
