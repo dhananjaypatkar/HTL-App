@@ -19,10 +19,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class RestServiceResponse<T>
 {
 
-    @XmlElement private String  status;
-    @XmlElement private String  errorMessage;
-    @XmlElement private String  message;
-    @XmlElement private List<T> result;
+    @XmlElement
+    private String  status;
+    @XmlElement
+    private String  errorMessage;
+    @XmlElement
+    private String  message;
+    @XmlElement
+    private List<T> result;
 
     /**
 	 * 
@@ -50,7 +54,7 @@ public class RestServiceResponse<T>
         this.errorMessage = errorMessage;
         this.result = result;
     }
-    
+
     /**
      * 
      * @param status
@@ -60,11 +64,12 @@ public class RestServiceResponse<T>
      * @param message
      *            general message if any
      * @param result
-     *           result if success
+     *            result if success
      */
     public RestServiceResponse(String status, String message, String errorMessage, T result)
     {
-        this(status, message, errorMessage, (result==null?null:new ArrayList<T>(Collections.singletonList(result))));
+        this(status, message, errorMessage, (result == null ? null
+                : new ArrayList<T>(Collections.singletonList(result))));
     }
 
     /**

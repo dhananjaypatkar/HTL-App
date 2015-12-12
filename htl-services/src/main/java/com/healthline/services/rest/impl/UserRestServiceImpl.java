@@ -13,11 +13,12 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.healthline.common.RestServiceResponse;
 import com.healthline.common.Status;
 import com.healthline.entity.User;
 import com.healthline.services.api.IUserService;
-import com.healthline.services.impl.UserServiceImpl;
 import com.healthline.services.rest.api.IUserRestService;
 
 @SuppressWarnings("javadoc")
@@ -27,7 +28,8 @@ public class UserRestServiceImpl
         implements IUserRestService
 {
 
-    private IUserService userService = new UserServiceImpl();
+    @Autowired
+    private IUserService userService;
 
     @Path("/create")
     @POST
@@ -60,13 +62,14 @@ public class UserRestServiceImpl
         }
         catch (Exception e)
         {
-            return Response.ok(new RestServiceResponse<Boolean>(Status.ERROR.name(), null, "Exception Occured", Boolean.FALSE))
+            return Response.ok(
+                    new RestServiceResponse<Boolean>(Status.ERROR.name(), null, "Exception Occured", Boolean.FALSE))
                     .build();
         }
 
         return Response.ok(
-                new RestServiceResponse<Boolean>(Status.SUCCESS.name(), "Deleted account successfully " + userId, null, Boolean.TRUE))
-                .build();
+                new RestServiceResponse<Boolean>(Status.SUCCESS.name(), "Deleted account successfully " + userId, null,
+                        Boolean.TRUE)).build();
     }
 
     @Path("/updateUser")
@@ -101,7 +104,9 @@ public class UserRestServiceImpl
         }
         catch (Exception e)
         {
-            return Response.ok(new RestServiceResponse<Boolean>(Status.ERROR.name(), null, "Exception Occured", Boolean.FALSE)).build();
+            return Response.ok(
+                    new RestServiceResponse<Boolean>(Status.ERROR.name(), null, "Exception Occured", Boolean.FALSE))
+                    .build();
         }
     }
 
