@@ -6,7 +6,10 @@ package com.healthline.services.rest.impl;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
 
+import com.healthline.common.RestServiceResponse;
+import com.healthline.common.Status;
 import com.healthline.services.rest.api.ITimelineRestService;
 
 /**
@@ -24,8 +27,8 @@ public class TimelineRestServiceImpl implements ITimelineRestService {
 	@Path("/create")
 	@GET
 	@Override
-	public String createTimeline() {
-		return "{ \"success\" : \"true\" }";
+	public Response createTimeline() {
+		return Response.ok(new RestServiceResponse<String>(Status.SUCCESS.name(), null, null)).build();
 	}
 
 	/* (non-Javadoc)
@@ -34,8 +37,8 @@ public class TimelineRestServiceImpl implements ITimelineRestService {
 	@Path("/add")
 	@GET
 	@Override
-	public String addEventToTimeLine() {
-		return "{ \"success\" : \"true\" }";
+	public Response addEventToTimeLine() {
+		return Response.ok(new RestServiceResponse<String>(Status.SUCCESS.name(), null, null)).build();
 	}
 
 	/* (non-Javadoc)
@@ -44,8 +47,8 @@ public class TimelineRestServiceImpl implements ITimelineRestService {
 	@Path("/get")
 	@GET
 	@Override
-	public String getTimeline() {
-		return "{\"result\" : []}";
+	public Response getTimeline() {
+		return Response.ok(new RestServiceResponse<String>(Status.SUCCESS.name(), null, null)).build();
 	}
 
 	/* (non-Javadoc)
@@ -54,8 +57,8 @@ public class TimelineRestServiceImpl implements ITimelineRestService {
 	@Path("/delete")
 	@GET
 	@Override
-	public String deleteTimeline() {
-		return "{\"success\" : \"true\"}";
+	public Response deleteTimeline() {
+		return Response.ok(new RestServiceResponse<String>(Status.SUCCESS.name(), null, null)).build();
 	}
 
 }
