@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -51,7 +52,7 @@ public class UserRestServiceImpl
     @Path("/deleteUser")
     @POST
     @Override
-    public Response deleteUser(String userId)
+    public Response deleteUser(@FormParam("userId") String userId)
     {
         try
         {
@@ -64,7 +65,7 @@ public class UserRestServiceImpl
         }
 
         return Response.ok(
-                new RestServiceResponse<Boolean>(Status.SUCCESS.name(), "Deleted account successfully", null, Boolean.TRUE))
+                new RestServiceResponse<Boolean>(Status.SUCCESS.name(), "Deleted account successfully " + userId, null, Boolean.TRUE))
                 .build();
     }
 
@@ -93,18 +94,15 @@ public class UserRestServiceImpl
     @Override
     public Response getUser(@QueryParam("userId") String userId)
     {
-        List<User> ret = new ArrayList<User>();
         try
         {
             User res = this.userService.getUser(userId);
-            ret.add(res);
+            return Response.ok(new RestServiceResponse<User>(Status.SUCCESS.name(), null, null, res)).build();
         }
         catch (Exception e)
         {
-            return Response.ok(new RestServiceResponse<User>(Status.ERROR.name(), null, "Exception Occured", ret))
-                    .build();
+            return Response.ok(new RestServiceResponse<Boolean>(Status.ERROR.name(), null, "Exception Occured", Boolean.FALSE)).build();
         }
-        return Response.ok(new RestServiceResponse<User>(Status.SUCCESS.name(), null, null, ret)).build();
     }
 
     /**

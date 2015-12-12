@@ -46,6 +46,7 @@ public class RestServiceResponse<T>
     public RestServiceResponse(String status, String message, String errorMessage, List<T> result)
     {
         this.status = status;
+        this.message = message;
         this.errorMessage = errorMessage;
         this.result = result;
     }
