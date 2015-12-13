@@ -11,10 +11,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.gson.Gson;
 import com.healthline.common.RestServiceResponse;
 import com.healthline.common.Status;
 import com.healthline.entity.User;
@@ -30,12 +30,14 @@ public class UserRestServiceImpl
 
     @Autowired
     private IUserService userService;
-
+    @Autowired
+    private Gson gson ;
+    
     @Path("/create")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public Response createNewUser(User user)
+    public String createNewUser(User user)
     {
         List<User> ret = new ArrayList<User>();
         try
@@ -45,16 +47,16 @@ public class UserRestServiceImpl
         }
         catch (Exception e)
         {
-            return Response.ok(new RestServiceResponse<User>(Status.ERROR.name(), null, "Exception Occured", ret))
-                    .build();
+            return this.gson.toJson(new RestServiceResponse<User>(Status.ERROR.name(), null, "Exception Occured", ret))
+                    ;
         }
-        return Response.ok(new RestServiceResponse<User>(Status.SUCCESS.name(), null, null, ret)).build();
+        return this.gson.toJson(new RestServiceResponse<User>(Status.SUCCESS.name(), null, null, ret));
     }
 
     @Path("/deleteUser")
     @POST
     @Override
-    public Response deleteUser(@FormParam("userId") String userId)
+    public String deleteUser(@FormParam("userId") String userId)
     {
         try
         {
@@ -62,21 +64,20 @@ public class UserRestServiceImpl
         }
         catch (Exception e)
         {
-            return Response.ok(
-                    new RestServiceResponse<Boolean>(Status.ERROR.name(), null, "Exception Occured", Boolean.FALSE))
-                    .build();
+            return this.gson.toJson(
+                    new RestServiceResponse<Boolean>(Status.ERROR.name(), null, "Exception Occured", Boolean.FALSE));
         }
 
-        return Response.ok(
+        return this.gson.toJson(
                 new RestServiceResponse<Boolean>(Status.SUCCESS.name(), "Deleted account successfully " + userId, null,
-                        Boolean.TRUE)).build();
+                        Boolean.TRUE));
     }
 
     @Path("/updateUser")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
-    public Response updateUser(User user)
+    public String updateUser(User user)
     {
         List<User> ret = new ArrayList<User>();
         try
@@ -86,27 +87,25 @@ public class UserRestServiceImpl
         }
         catch (Exception e)
         {
-            return Response.ok(new RestServiceResponse<User>(Status.ERROR.name(), null, "Exception Occured", ret))
-                    .build();
+            return this.gson.toJson(new RestServiceResponse<User>(Status.ERROR.name(), null, "Exception Occured", ret));
         }
-        return Response.ok(new RestServiceResponse<User>(Status.SUCCESS.name(), null, null, ret)).build();
+        return this.gson.toJson(new RestServiceResponse<User>(Status.SUCCESS.name(), null, null, ret));
     }
 
     @Path("/getUser")
     @GET
     @Override
-    public Response getUser(@QueryParam("userId") String userId)
+    public String getUser(@QueryParam("userId") String userId)
     {
         try
         {
             User res = this.userService.getUser(userId);
-            return Response.ok(new RestServiceResponse<User>(Status.SUCCESS.name(), null, null, res)).build();
+            return this.gson.toJson(new RestServiceResponse<User>(Status.SUCCESS.name(), null, null, res));
         }
         catch (Exception e)
         {
-            return Response.ok(
-                    new RestServiceResponse<Boolean>(Status.ERROR.name(), null, "Exception Occured", Boolean.FALSE))
-                    .build();
+            return this.gson.toJson(
+                    new RestServiceResponse<Boolean>(Status.ERROR.name(), null, "Exception Occured", Boolean.FALSE));
         }
     }
 
@@ -127,4 +126,21 @@ public class UserRestServiceImpl
         this.userService = userService;
     }
 
+    /**
+     * @return the gson
+     */
+    public Gson getGson()
+    {
+        return this.gson;
+    }
+
+    /**
+     * @param gson the gson to set
+     */
+    public void setGson(Gson gson)
+    {
+        this.gson = gson;
+    }
+
+    
 }

@@ -8,8 +8,10 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.google.gson.Gson;
 import com.healthline.common.RestServiceResponse;
 import com.healthline.common.Status;
 import com.healthline.services.rest.api.ITimelineRestService;
@@ -24,7 +26,8 @@ import com.healthline.services.rest.api.ITimelineRestService;
 public class TimelineRestServiceImpl
         implements ITimelineRestService
 {
-
+    @Autowired
+    private Gson gson ;
     /*
      * (non-Javadoc)
      * @see
@@ -33,9 +36,9 @@ public class TimelineRestServiceImpl
     @Path("/create")
     @POST
     @Override
-    public Response createTimeline()
+    public String createTimeline()
     {
-        return Response.ok(new RestServiceResponse<Boolean>(Status.SUCCESS.name(), null, null, Boolean.TRUE)).build();
+        return this.gson.toJson(new RestServiceResponse<Boolean>(Status.SUCCESS.name(), null, null, Boolean.TRUE));
     }
 
     /*
@@ -47,9 +50,9 @@ public class TimelineRestServiceImpl
     @Path("/add")
     @POST
     @Override
-    public Response addEventToTimeLine()
+    public String addEventToTimeLine()
     {
-        return Response.ok(new RestServiceResponse<Boolean>(Status.SUCCESS.name(), null, null, Boolean.TRUE)).build();
+        return this.gson.toJson(new RestServiceResponse<Boolean>(Status.SUCCESS.name(), null, null, Boolean.TRUE));
     }
 
     /*
@@ -59,9 +62,9 @@ public class TimelineRestServiceImpl
     @Path("/get")
     @GET
     @Override
-    public Response getTimeline()
+    public String getTimeline()
     {
-        return Response.ok(new RestServiceResponse<Boolean>(Status.SUCCESS.name(), null, null, Boolean.TRUE)).build();
+        return this.gson.toJson(new RestServiceResponse<Boolean>(Status.SUCCESS.name(), null, null, Boolean.TRUE));
     }
 
     /*
@@ -72,9 +75,9 @@ public class TimelineRestServiceImpl
     @Path("/delete")
     @POST
     @Override
-    public Response deleteTimeline()
+    public String deleteTimeline()
     {
-        return Response.ok(new RestServiceResponse<Boolean>(Status.SUCCESS.name(), null, null, Boolean.TRUE)).build();
+        return this.gson.toJson(new RestServiceResponse<Boolean>(Status.SUCCESS.name(), null, null, Boolean.TRUE));
     }
 
     /*
@@ -86,9 +89,24 @@ public class TimelineRestServiceImpl
     @Path("/deleteEvent")
     @POST
     @Override
-    public Response deleteEventFromTimeline()
+    public String deleteEventFromTimeline()
     {
-        return Response.ok(new RestServiceResponse<Boolean>(Status.SUCCESS.name(), null, null, Boolean.TRUE)).build();
+        return this.gson.toJson(new RestServiceResponse<Boolean>(Status.SUCCESS.name(), null, null, Boolean.TRUE));
     }
 
+    /**
+     * @return the gson
+     */
+    public Gson getGson()
+    {
+        return this.gson;
+    }
+
+    /**
+     * @param gson the gson to set
+     */
+    public void setGson(Gson gson)
+    {
+        this.gson = gson;
+    }
 }

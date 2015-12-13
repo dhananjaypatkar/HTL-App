@@ -8,6 +8,8 @@
  
 	<context:component-scan base-package="com.healthline" />
 	
+	<bean id = "gson" class ="com.google.gson.Gson" />
+	
 	<bean id = "userService" class ="com.healthline.services.impl.UserServiceImpl" >
 		<property name="userServiceDao" ref="userServiceDao" />
 	</bean> 

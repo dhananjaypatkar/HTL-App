@@ -3,7 +3,6 @@
  */
 package com.healthline.services.rest.api;
 
-import javax.ws.rs.core.Response;
 
 /**
  * @author Aniket
@@ -12,13 +11,13 @@ import javax.ws.rs.core.Response;
 public interface ITimelineRestService
 {
 
-    Response createTimeline();
+    String createTimeline();
 
-    Response addEventToTimeLine();
+    String addEventToTimeLine();
 
-    Response getTimeline();
+    String getTimeline();
 
-    Response deleteTimeline();
+    String deleteTimeline();
 
-    Response deleteEventFromTimeline();
+    String deleteEventFromTimeline();
 }

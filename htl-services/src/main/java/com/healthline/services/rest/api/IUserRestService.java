@@ -3,8 +3,6 @@
  */
 package com.healthline.services.rest.api;
 
-import javax.ws.rs.core.Response;
-
 import com.healthline.entity.User;
 
 /**
@@ -14,11 +12,11 @@ import com.healthline.entity.User;
 public interface IUserRestService
 {
 
-    Response createNewUser(User user);
+    String createNewUser(User user);
 
-    Response getUser(String userId);
+    String getUser(String userId);
 
-    Response updateUser(User user);
+    String updateUser(User user);
 
-    Response deleteUser(String userId);
+    String deleteUser(String userId);
 }
