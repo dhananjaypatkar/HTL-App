@@ -3,6 +3,8 @@
  */
 package com.healthline.dao.impl;
 
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import com.healthline.dao.api.IUserServiceDao;
 import com.healthline.entity.User;
 
@@ -14,7 +16,8 @@ public class UserServiceDaoImpl
         implements IUserServiceDao
 {
 
-    /*
+    private JdbcTemplate jdbcTemplate;
+	/*
      * (non-Javadoc)
      * @see
      * com.healthline.dao.api.IUserServiceDao#createNewUser(com.healthline.entity
@@ -58,4 +61,13 @@ public class UserServiceDaoImpl
         return true;
     }
 
+	public JdbcTemplate getJdbcTemplate() {
+		return this.jdbcTemplate;
+	}
+
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
+
+    
 }
