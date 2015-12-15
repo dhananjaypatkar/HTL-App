@@ -14,6 +14,8 @@
 		<property name="userServiceDao" ref="userServiceDao" />
 	</bean> 
 	
-	<bean id = "userServiceDao" class ="com.healthline.dao.impl.UserServiceDaoImpl"/>
+	<bean id = "timelineService" class="com.healthline.services.impl.TimelineServiceImpl" >
+		<property name ="timelineServiceDao" ref="timelineServiceDao"/>
+	</bean>
 	
 </beans>

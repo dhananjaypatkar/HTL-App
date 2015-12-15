@@ -29,8 +29,8 @@ public class RestServiceResponse<T>
     private List<T> result;
 
     /**
-	 * 
-	 */
+     * 
+     */
     public RestServiceResponse()
     {
         super();
@@ -68,8 +68,8 @@ public class RestServiceResponse<T>
      */
     public RestServiceResponse(String status, String message, String errorMessage, T result)
     {
-        this(status, message, errorMessage, (result == null ? null
-                : new ArrayList<T>(Collections.singletonList(result))));
+        this(status, message, errorMessage,
+                (result == null ? null : new ArrayList<T>(Collections.singletonList(result))));
     }
 
     /**

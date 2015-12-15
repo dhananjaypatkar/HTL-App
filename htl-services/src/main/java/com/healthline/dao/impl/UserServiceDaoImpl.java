@@ -3,6 +3,7 @@
  */
 package com.healthline.dao.impl;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.healthline.dao.api.IUserServiceDao;
@@ -17,7 +18,8 @@ public class UserServiceDaoImpl
 {
 
     private JdbcTemplate jdbcTemplate;
-	/*
+
+    /*
      * (non-Javadoc)
      * @see
      * com.healthline.dao.api.IUserServiceDao#createNewUser(com.healthline.entity
@@ -36,7 +38,15 @@ public class UserServiceDaoImpl
     @Override
     public User getUser(String userId)
     {
-        return null;
+        User user = null;
+        try
+        {
+            this.jdbcTemplate.queryForObject("select * from htl_app.htl_user where user_id = ?", User.class, userId);
+        }
+        catch (EmptyResultDataAccessException e)
+        {
+        }
+        return user;
     }
 
     /*
@@ -61,13 +71,14 @@ public class UserServiceDaoImpl
         return true;
     }
 
-	public JdbcTemplate getJdbcTemplate() {
-		return this.jdbcTemplate;
-	}
+    public JdbcTemplate getJdbcTemplate()
+    {
+        return this.jdbcTemplate;
+    }
 
-	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
-	}
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate)
+    {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
-    
 }

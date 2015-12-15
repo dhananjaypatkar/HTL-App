@@ -8,11 +8,11 @@ package com.healthline.entity;
 public class Event
 {
 
-    private Media       media;
+    private Media media;
 
     private Description text;
 
-    private EventDate   eventDate;
+    private EventDate eventDate;
 
     public EventDate getEventDate()
     {

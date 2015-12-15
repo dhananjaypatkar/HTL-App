@@ -18,7 +18,7 @@ public class UserServiceImpl
         implements IUserService
 {
 
-    private IUserServiceDao userServiceDao = new UserServiceDaoImpl();
+    private IUserServiceDao userServiceDao;
 
     /*
      * (non-Javadoc)

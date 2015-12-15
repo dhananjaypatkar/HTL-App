@@ -1,5 +1,6 @@
 package com.healthline.services.impl;
 
+import com.healthline.dao.api.ITimelineServiceDao;
 import com.healthline.services.api.ITimelineService;
 
 /**
@@ -10,6 +11,8 @@ public class TimelineServiceImpl
         implements ITimelineService
 {
 
+    private ITimelineServiceDao timelineServiceDao;
+
     /*
      * (non-Javadoc)
      * @see com.healthline.services.api.ITimelineService#createTimeline()
@@ -17,7 +20,6 @@ public class TimelineServiceImpl
     @Override
     public String createTimeline()
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -28,7 +30,6 @@ public class TimelineServiceImpl
     @Override
     public String addEventToTimeLine()
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -39,7 +40,6 @@ public class TimelineServiceImpl
     @Override
     public String getTimeline()
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -50,7 +50,6 @@ public class TimelineServiceImpl
     @Override
     public String deleteTimeline()
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -64,6 +63,16 @@ public class TimelineServiceImpl
     {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    public ITimelineServiceDao getTimelineServiceDao()
+    {
+        return timelineServiceDao;
+    }
+
+    public void setTimelineServiceDao(ITimelineServiceDao timelineServiceDao)
+    {
+        this.timelineServiceDao = timelineServiceDao;
     }
 
 }

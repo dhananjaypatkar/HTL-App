@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.google.gson.Gson;
 import com.healthline.common.RestServiceResponse;
 import com.healthline.common.Status;
+import com.healthline.services.api.ITimelineService;
 import com.healthline.services.rest.api.ITimelineRestService;
 
 /**
@@ -27,7 +28,10 @@ public class TimelineRestServiceImpl
         implements ITimelineRestService
 {
     @Autowired
-    private Gson gson ;
+    private ITimelineService timelineService;
+    @Autowired
+    private Gson             gson;
+
     /*
      * (non-Javadoc)
      * @see
@@ -92,6 +96,22 @@ public class TimelineRestServiceImpl
     public String deleteEventFromTimeline()
     {
         return this.gson.toJson(new RestServiceResponse<Boolean>(Status.SUCCESS.name(), null, null, Boolean.TRUE));
+    }
+
+    /**
+     * @return the timelineService
+     */
+    public ITimelineService getTimelineService()
+    {
+        return timelineService;
+    }
+
+    /**
+     * @param timelineService the timelineService to set
+     */
+    public void setTimelineService(ITimelineService timelineService)
+    {
+        this.timelineService = timelineService;
     }
 
     /**

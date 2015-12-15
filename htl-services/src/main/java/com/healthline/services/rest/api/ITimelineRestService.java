@@ -3,7 +3,6 @@
  */
 package com.healthline.services.rest.api;
 
-
 /**
  * @author Aniket
  * 

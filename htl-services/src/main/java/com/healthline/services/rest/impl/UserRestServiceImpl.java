@@ -31,8 +31,8 @@ public class UserRestServiceImpl
     @Autowired
     private IUserService userService;
     @Autowired
-    private Gson gson ;
-    
+    private Gson         gson;
+
     @Path("/create")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -47,8 +47,7 @@ public class UserRestServiceImpl
         }
         catch (Exception e)
         {
-            return this.gson.toJson(new RestServiceResponse<User>(Status.ERROR.name(), null, "Exception Occured", ret))
-                    ;
+            return this.gson.toJson(new RestServiceResponse<User>(Status.ERROR.name(), null, "Exception Occured", ret));
         }
         return this.gson.toJson(new RestServiceResponse<User>(Status.SUCCESS.name(), null, null, ret));
     }
@@ -68,9 +67,8 @@ public class UserRestServiceImpl
                     new RestServiceResponse<Boolean>(Status.ERROR.name(), null, "Exception Occured", Boolean.FALSE));
         }
 
-        return this.gson.toJson(
-                new RestServiceResponse<Boolean>(Status.SUCCESS.name(), "Deleted account successfully " + userId, null,
-                        Boolean.TRUE));
+        return this.gson.toJson(new RestServiceResponse<Boolean>(Status.SUCCESS.name(),
+                "Deleted account successfully " + userId, null, Boolean.TRUE));
     }
 
     @Path("/updateUser")
@@ -100,12 +98,20 @@ public class UserRestServiceImpl
         try
         {
             User res = this.userService.getUser(userId);
-            return this.gson.toJson(new RestServiceResponse<User>(Status.SUCCESS.name(), null, null, res));
+            if ( res != null )
+            {
+                return this.gson.toJson(new RestServiceResponse<User>(Status.SUCCESS.name(), null, null, res));
+            }
+            else
+            {
+                return this.gson
+                        .toJson(new RestServiceResponse<User>(Status.ERROR.name(), null, "User not found", res));
+            }
         }
         catch (Exception e)
         {
-            return this.gson.toJson(
-                    new RestServiceResponse<Boolean>(Status.ERROR.name(), null, "Exception Occured", Boolean.FALSE));
+            return this.gson.toJson(new RestServiceResponse<Boolean>(Status.ERROR.name(), null,
+                    "There was some error at our end", Boolean.FALSE));
         }
     }
 
@@ -142,5 +148,4 @@ public class UserRestServiceImpl
         this.gson = gson;
     }
 
-    
 }

@@ -21,21 +21,21 @@ public class User
     private static final long serialVersionUID = -2587942269908270351L;
 
     // basic user details
-    private String            userId;
-    private String            email;
-    private String            phoneNo;
-    private String            firstname;
-    private String            lastname;
-    private transient String  password;
-    private DateTime          birthdate;
-    private String            gender;
+    private String           userId;
+    private String           email;
+    private String           phoneNo;
+    private String           firstname;
+    private String           lastname;
+    private transient String password;
+    private DateTime         birthdate;
+    private String           gender;
 
     // Change password functionality
-    private transient String  oldPassword;
-    private transient String  newPassword;
+    private transient String oldPassword;
+    private transient String newPassword;
 
     // for soft deleting an user
-    private boolean           isDeleted;
+    private boolean isDeleted;
 
     public String getUserId()
     {

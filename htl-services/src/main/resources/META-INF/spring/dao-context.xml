@@ -23,5 +23,9 @@
 	<bean id="userServiceDao" class="com.healthline.dao.impl.UserServiceDaoImpl" >
 		<property name = "jdbcTemplate" ref = "jdbcTemplate" />
 	</bean>
+	
+	<bean id="timelineServiceDao" class="com.healthline.dao.impl.TimelineServiceDaoImpl" >
+		<property name = "jdbcTemplate" ref = "jdbcTemplate" />
+	</bean>
 
 </beans>
