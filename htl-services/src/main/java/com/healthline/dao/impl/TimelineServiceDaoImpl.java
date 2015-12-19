@@ -3,6 +3,10 @@
  */
 package com.healthline.dao.impl;
 
+import java.util.Properties;
+
+import javax.annotation.Resource;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.healthline.dao.api.ITimelineServiceDao;
@@ -19,6 +23,8 @@ public class TimelineServiceDaoImpl
 
     private JdbcTemplate jdbcTemplate;
 
+    @Resource(name = "dbQueries")
+    private Properties dbQueries;
     /*
      * (non-Javadoc)
      * @see com.healthline.dao.api.ITimelineServiceDao#createTimeline(com.healthline.entity.Timeline)
@@ -68,14 +74,37 @@ public class TimelineServiceDaoImpl
     {
         return false;
     }
-
+    /**
+     * 
+     * @return jdbcTemplate
+     */
     public JdbcTemplate getJdbcTemplate()
     {
         return this.jdbcTemplate;
     }
-
+    /**
+     * 
+     * @param jdbcTemplate the jdbcTemplate to set
+     */
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate)
     {
         this.jdbcTemplate = jdbcTemplate;
     }
+
+    /**
+     * @return the dbQueries
+     */
+    public Properties getDbQueries()
+    {
+        return this.dbQueries;
+    }
+
+    /**
+     * @param dbQueries the dbQueries to set
+     */
+    public void setDbQueries(Properties dbQueries)
+    {
+        this.dbQueries = dbQueries;
+    }
+    
 }

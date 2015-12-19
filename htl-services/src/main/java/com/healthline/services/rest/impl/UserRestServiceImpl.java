@@ -85,6 +85,7 @@ public class UserRestServiceImpl
         }
         catch (Exception e)
         {
+            
             return this.gson.toJson(new RestServiceResponse<User>(Status.ERROR.name(), null, "Exception Occured", ret));
         }
         return this.gson.toJson(new RestServiceResponse<User>(Status.SUCCESS.name(), null, null, ret));
@@ -93,23 +94,22 @@ public class UserRestServiceImpl
     @Path("/getUser")
     @GET
     @Override
-    public String getUser(@QueryParam("userId") String userId)
+    public String getUser(@QueryParam("email") String email)
     {
         try
         {
-            User res = this.userService.getUser(userId);
+            User res = this.userService.getUser(email);
             if ( res != null )
             {
                 return this.gson.toJson(new RestServiceResponse<User>(Status.SUCCESS.name(), null, null, res));
             }
-            else
-            {
-                return this.gson
-                        .toJson(new RestServiceResponse<User>(Status.ERROR.name(), null, "User not found", res));
-            }
+            //user does not exist
+            return this.gson
+                    .toJson(new RestServiceResponse<User>(Status.ERROR.name(), null, "User not found", res));
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             return this.gson.toJson(new RestServiceResponse<Boolean>(Status.ERROR.name(), null,
                     "There was some error at our end", Boolean.FALSE));
         }

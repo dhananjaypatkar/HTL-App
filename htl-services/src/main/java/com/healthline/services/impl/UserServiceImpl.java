@@ -29,7 +29,6 @@ public class UserServiceImpl
     @Override
     public User createNewUser(User user)
     {
-        user.setUserId(UUID.randomUUID().toString());
         this.userServiceDao.createNewUser(user);
         return user;
     }
@@ -39,9 +38,9 @@ public class UserServiceImpl
      * @see com.healthline.services.api.IUserService#getUser(java.lang.String)
      */
     @Override
-    public User getUser(String userId)
+    public User getUser(String email)
     {
-        User user = this.userServiceDao.getUser(userId);
+        User user = this.userServiceDao.getUser(email);
         return user;
     }
 
@@ -64,9 +63,9 @@ public class UserServiceImpl
      * com.healthline.services.api.IUserService#deleteUser(java.lang.String)
      */
     @Override
-    public boolean deleteUser(String userId)
+    public boolean deleteUser(String email)
     {
-        this.userServiceDao.deleteUser(userId);
+        this.userServiceDao.deleteUser(email);
         return false;
     }
 

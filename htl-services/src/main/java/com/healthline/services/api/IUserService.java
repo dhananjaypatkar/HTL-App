@@ -14,10 +14,10 @@ public interface IUserService
 
     User createNewUser(User user);
 
-    User getUser(String userId);
+    User getUser(String email);
 
     User updateUser(User user);
 
-    boolean deleteUser(String userId);
+    boolean deleteUser(String email);
 
 }
