@@ -1,5 +1,9 @@
 package com.healthline.entity;
 
+import java.math.BigInteger;
+
+import org.joda.time.DateTime;
+
 /**
  * 
  * @author 212473687
@@ -8,15 +12,36 @@ package com.healthline.entity;
 public class Event
 {
 
-    private Media media;
+    private BigInteger         id;
 
-    private Description text;
+    private Media              media;
 
-    private EventDate eventDate;
+    private Description        text;
+
+    private EventDate          eventDate;
+
+    private transient DateTime startDate;
+    private transient DateTime endDate;
+
+    /**
+     * @return the id
+     */
+    public BigInteger getId()
+    {
+        return this.id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(BigInteger id)
+    {
+        this.id = id;
+    }
 
     public EventDate getEventDate()
     {
-        return eventDate;
+        return this.eventDate;
     }
 
     public void setEventDate(EventDate eventDate)
@@ -31,7 +56,7 @@ public class Event
 
     public Media getMedia()
     {
-        return media;
+        return this.media;
     }
 
     public void setMedia(Media media)
@@ -41,12 +66,44 @@ public class Event
 
     public Description getText()
     {
-        return text;
+        return this.text;
     }
 
     public void setText(Description text)
     {
         this.text = text;
+    }
+
+    /**
+     * @return the startDate
+     */
+    public DateTime getStartDate()
+    {
+        return this.startDate;
+    }
+
+    /**
+     * @param startDate the startDate to set
+     */
+    public void setStartDate(DateTime startDate)
+    {
+        this.startDate = startDate;
+    }
+
+    /**
+     * @return the endDate
+     */
+    public DateTime getEndDate()
+    {
+        return this.endDate;
+    }
+
+    /**
+     * @param endDate the endDate to set
+     */
+    public void setEndDate(DateTime endDate)
+    {
+        this.endDate = endDate;
     }
 
 }

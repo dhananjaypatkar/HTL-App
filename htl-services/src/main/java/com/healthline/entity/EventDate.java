@@ -17,6 +17,18 @@ public class EventDate
         // TODO Auto-generated constructor stub
     }
 
+    public EventDate(int year, int month, int day)
+    {
+        this(String.valueOf(year), String.valueOf(month), String.valueOf(day));
+    }
+
+    public EventDate(String year, String month, String day)
+    {
+        this.year = year;
+        this.month = month;
+        this.day = day;
+    }
+
     /**
      * 
      * @return The month

@@ -1,6 +1,14 @@
 package com.healthline.services.impl;
 
+import java.io.InputStream;
+import java.math.BigInteger;
+
 import com.healthline.dao.api.ITimelineServiceDao;
+import com.healthline.entity.Description;
+import com.healthline.entity.Event;
+import com.healthline.entity.Media;
+import com.healthline.entity.Timeline;
+import com.healthline.entity.Title;
 import com.healthline.services.api.ITimelineService;
 
 /**
@@ -18,9 +26,13 @@ public class TimelineServiceImpl
      * @see com.healthline.services.api.ITimelineService#createTimeline()
      */
     @Override
-    public String createTimeline()
+    public void createTimeline(BigInteger userId, String headline, String description)
     {
-        return null;
+        Title title = new Title();
+        title.setText(new Description(headline, description));
+        Timeline timeline = new Timeline();
+        timeline.setTitle(title);
+        this.timelineServiceDao.createTimeline(userId, timeline);
     }
 
     /*
@@ -28,9 +40,16 @@ public class TimelineServiceImpl
      * @see com.healthline.services.api.ITimelineService#addEventToTimeLine()
      */
     @Override
-    public String addEventToTimeLine()
+    public void addEventToTimeLine(BigInteger timelineId, Event event, String fileName, InputStream fileData)
     {
-        return null;
+        Media media = new Media();
+        if ( fileData != null )
+        {
+            // TODO upload filedata to some server(say azure) and set the appropriate url below
+            media.setUrl(fileName);
+        }
+        event.setMedia(media);
+        this.timelineServiceDao.addEventToTimeline(timelineId, event);
     }
 
     /*
@@ -38,9 +57,9 @@ public class TimelineServiceImpl
      * @see com.healthline.services.api.ITimelineService#getTimeline()
      */
     @Override
-    public String getTimeline()
+    public Timeline getTimeline(BigInteger userId)
     {
-        return null;
+        return this.timelineServiceDao.getTimeline(userId);
     }
 
     /*
@@ -61,18 +80,22 @@ public class TimelineServiceImpl
     @Override
     public String deleteEventFromTimeline()
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
+    /**
+     * @return timelineServiceDao
+     */
     public ITimelineServiceDao getTimelineServiceDao()
     {
-        return timelineServiceDao;
+        return this.timelineServiceDao;
     }
 
+    /**
+     * @param timelineServiceDao the timelineServiceDao to set
+     */
     public void setTimelineServiceDao(ITimelineServiceDao timelineServiceDao)
     {
         this.timelineServiceDao = timelineServiceDao;
     }
-
 }

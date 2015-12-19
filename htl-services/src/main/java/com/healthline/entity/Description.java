@@ -17,6 +17,16 @@ public class Description
     }
 
     /**
+     * @param headline
+     * @param text
+     */
+    public Description(String headline, String text)
+    {
+        this.headline = headline;
+        this.text = text;
+    }
+
+    /**
      * 
      * @return The headline
      */

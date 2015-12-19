@@ -44,7 +44,7 @@ public class UserServiceDaoImpl
     @Override
     public User createNewUser(final User user)
     {
-        this.jdbcTemplate.execute(this.dbQueries.getProperty("insert.user"), new PreparedStatementCallback<Boolean>()
+        this.jdbcTemplate.execute(this.dbQueries.getProperty("create.user"), new PreparedStatementCallback<Boolean>()
         {
 
             @Override
@@ -52,11 +52,12 @@ public class UserServiceDaoImpl
                     throws SQLException, DataAccessException
             {
                 // insert into htl_app.htl_user(fullname, email, last_login_date, city, region) values (?, ?, ?, ?, ?)
-                ps.setString(1, user.getFullname());
-                ps.setString(2, user.getEmail());
-                ps.setTimestamp(3, new Timestamp(user.getLastLoginDate().getMillis()));
-                ps.setString(4, user.getCity());
-                ps.setString(5, user.getRegion());
+                int paramIndex = 0;
+                ps.setString(++paramIndex, user.getFullname());
+                ps.setString(++paramIndex, user.getEmail());
+                ps.setTimestamp(++paramIndex, new Timestamp(user.getLastLoginDate().getMillis()));
+                ps.setString(++paramIndex, user.getCity());
+                ps.setString(++paramIndex, user.getRegion());
 
                 return ps.execute();
             }
@@ -85,12 +86,12 @@ public class UserServiceDaoImpl
                         throws SQLException
                 {
                     User result = new User();
-                    result.setId(new BigInteger(res.getString(1)));
-                    result.setFullname(res.getString(2));
-                    result.setEmail(res.getString(3));
-                    result.setLastLoginDate(new DateTime(res.getTimestamp(4)));
-                    result.setCity(res.getString(5));
-                    result.setRegion(res.getString(6));
+                    result.setId(new BigInteger(res.getString("id")));
+                    result.setFullname(res.getString("fullname"));
+                    result.setEmail(res.getString("email"));
+                    result.setLastLoginDate(new DateTime(res.getTimestamp("last_login_date")));
+                    result.setCity(res.getString("city"));
+                    result.setRegion(res.getString("region"));
                     return result;
                 }
             });

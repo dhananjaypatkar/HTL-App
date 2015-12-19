@@ -3,6 +3,8 @@
  */
 package com.healthline.services.rest.api;
 
+import org.glassfish.jersey.media.multipart.FormDataMultiPart;
+
 /**
  * @author Aniket
  * 
@@ -10,13 +12,13 @@ package com.healthline.services.rest.api;
 public interface ITimelineRestService
 {
 
-    String createTimeline();
+    String createTimeline(String userId, String headline, String description);
 
-    String addEventToTimeLine();
+    String addEventToTimeLine(FormDataMultiPart form);
 
-    String getTimeline();
+    String getTimeline(String userId);
 
-    String deleteTimeline();
+    String deleteTimeline(String userId);
 
-    String deleteEventFromTimeline();
+    String deleteEventFromTimeline(String eventId);
 }

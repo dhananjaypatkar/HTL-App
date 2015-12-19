@@ -1,5 +1,7 @@
 package com.healthline.entity;
 
+import java.math.BigInteger;
+
 /**
  * 
  * @author 212473687
@@ -8,13 +10,30 @@ package com.healthline.entity;
 public class Media
 {
 
-    private String url;
-    private String caption;
-    private String credit;
+    private BigInteger id;
+    private String     url;
+    private String     caption;
+    private String     credit;
 
     public Media()
     {
         // TODO Auto-generated constructor stub
+    }
+
+    /**
+     * @return the id
+     */
+    public BigInteger getId()
+    {
+        return this.id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(BigInteger id)
+    {
+        this.id = id;
     }
 
     /**
@@ -23,7 +42,7 @@ public class Media
      */
     public String getUrl()
     {
-        return url;
+        return this.url;
     }
 
     /**
@@ -42,7 +61,7 @@ public class Media
      */
     public String getCaption()
     {
-        return caption;
+        return this.caption;
     }
 
     /**
@@ -61,7 +80,7 @@ public class Media
      */
     public String getCredit()
     {
-        return credit;
+        return this.credit;
     }
 
     /**

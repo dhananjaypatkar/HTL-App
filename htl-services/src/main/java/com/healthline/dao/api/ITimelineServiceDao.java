@@ -3,7 +3,12 @@
  */
 package com.healthline.dao.api;
 
+import java.math.BigInteger;
+import java.util.List;
+import java.util.Map;
+
 import com.healthline.entity.Event;
+import com.healthline.entity.Media;
 import com.healthline.entity.Timeline;
 
 /**
@@ -12,13 +17,17 @@ import com.healthline.entity.Timeline;
  */
 public interface ITimelineServiceDao
 {
-    void createTimeline(Timeline timeline);
+    void createTimeline(BigInteger userId, Timeline timeline);
 
-    Timeline getTimeline(String userId);
+    Timeline getTimeline(BigInteger userId);
 
-    boolean addEventToTimeline(String userId, Event event);
+    void addEventToTimeline(BigInteger timelineId, Event event);
 
-    boolean deleteTimeline(String userId);
+    boolean deleteTimeline(BigInteger userId);
 
-    boolean deleteEventFromTimeline(String userId, long eventId);
+    boolean deleteEventFromTimeline(BigInteger eventId);
+
+    List<Event> getEventsOnTimeline(BigInteger timelineId);
+
+    Map<BigInteger, Media> getMediaForEvents(List<BigInteger> events);
 }

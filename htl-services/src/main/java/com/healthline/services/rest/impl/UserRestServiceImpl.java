@@ -47,13 +47,15 @@ public class UserRestServiceImpl
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             return this.gson.toJson(new RestServiceResponse<User>(Status.ERROR.name(), null, "Exception Occured", ret));
         }
         return this.gson.toJson(new RestServiceResponse<User>(Status.SUCCESS.name(), null, null, ret));
     }
 
-    @Path("/deleteUser")
+    @Path("/delete-user")
     @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Override
     public String deleteUser(@FormParam("userId") String userId)
     {
@@ -63,15 +65,16 @@ public class UserRestServiceImpl
         }
         catch (Exception e)
         {
-            return this.gson.toJson(
-                    new RestServiceResponse<Boolean>(Status.ERROR.name(), null, "Exception Occured", Boolean.FALSE));
+            e.printStackTrace();
+            return this.gson.toJson(new RestServiceResponse<Boolean>(Status.ERROR.name(), null, "Exception Occured",
+                    Boolean.FALSE));
         }
 
-        return this.gson.toJson(new RestServiceResponse<Boolean>(Status.SUCCESS.name(),
-                "Deleted account successfully " + userId, null, Boolean.TRUE));
+        return this.gson.toJson(new RestServiceResponse<Boolean>(Status.SUCCESS.name(), "Deleted account successfully "
+                + userId, null, Boolean.TRUE));
     }
 
-    @Path("/updateUser")
+    @Path("/update-user")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
@@ -85,13 +88,13 @@ public class UserRestServiceImpl
         }
         catch (Exception e)
         {
-            
+            e.printStackTrace();
             return this.gson.toJson(new RestServiceResponse<User>(Status.ERROR.name(), null, "Exception Occured", ret));
         }
         return this.gson.toJson(new RestServiceResponse<User>(Status.SUCCESS.name(), null, null, ret));
     }
 
-    @Path("/getUser")
+    @Path("/get-user")
     @GET
     @Override
     public String getUser(@QueryParam("email") String email)
@@ -103,9 +106,8 @@ public class UserRestServiceImpl
             {
                 return this.gson.toJson(new RestServiceResponse<User>(Status.SUCCESS.name(), null, null, res));
             }
-            //user does not exist
-            return this.gson
-                    .toJson(new RestServiceResponse<User>(Status.ERROR.name(), null, "User not found", res));
+            // user does not exist
+            return this.gson.toJson(new RestServiceResponse<User>(Status.ERROR.name(), null, "User not found", res));
         }
         catch (Exception e)
         {

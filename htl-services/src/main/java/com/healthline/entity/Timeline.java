@@ -1,5 +1,6 @@
 package com.healthline.entity;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
 public class Timeline
 {
 
+    private BigInteger  id;
     private Title       title;
     private List<Event> events = new ArrayList<Event>();
 
@@ -20,12 +22,28 @@ public class Timeline
     }
 
     /**
+     * @return the id
+     */
+    public BigInteger getId()
+    {
+        return this.id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(BigInteger id)
+    {
+        this.id = id;
+    }
+
+    /**
      * 
      * @return The title
      */
     public Title getTitle()
     {
-        return title;
+        return this.title;
     }
 
     /**
@@ -44,7 +62,7 @@ public class Timeline
      */
     public List<Event> getEvents()
     {
-        return events;
+        return this.events;
     }
 
     /**

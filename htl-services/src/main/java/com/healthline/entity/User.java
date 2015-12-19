@@ -280,15 +280,17 @@ public class User
         return true;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString()
     {
-        return "User [id=" + this.id + ", email=" + this.email + ", phoneNo=" + this.phoneNo + ", fullname=" + this.fullname
-                + ", birthdate=" + this.birthdate + ", gender=" + this.gender + ", city=" + this.city + ", lastLoginDate="
-                + this.lastLoginDate + ", region=" + this.region + ", isDeleted=" + this.isDeleted + "]";
+        return "User [id=" + this.id + ", email=" + this.email + ", phoneNo=" + this.phoneNo + ", fullname="
+                + this.fullname + ", birthdate=" + this.birthdate + ", gender=" + this.gender + ", city=" + this.city
+                + ", lastLoginDate=" + this.lastLoginDate + ", region=" + this.region + ", isDeleted=" + this.isDeleted
+                + "]";
     }
 
 }
