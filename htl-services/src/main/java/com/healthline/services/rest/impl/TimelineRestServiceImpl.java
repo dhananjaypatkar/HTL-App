@@ -5,7 +5,6 @@ package com.healthline.services.rest.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigInteger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -60,7 +59,7 @@ public class TimelineRestServiceImpl
     {
         try
         {
-            this.timelineService.createTimeline(new BigInteger(userId), headline, description);
+            this.timelineService.createTimeline(new Long(userId), headline, description);
             return this.gson.toJson(new RestServiceResponse<Boolean>(Status.SUCCESS.name(),
                     "Timeline created successfully", null, Boolean.TRUE));
         }
@@ -84,12 +83,12 @@ public class TimelineRestServiceImpl
     @Override
     public String addEventToTimeLine(FormDataMultiPart form)
     {
-        BigInteger timelineId = new BigInteger(form.getField("timelineId").getValue());
+        Long timelineId = new Long(form.getField("timelineId").getValue());
         String description = form.getField("description").getValue();
         DateTime startDate = new DateTime(form.getField("startDate").getValue());
         DateTime endDate = startDate;
         String endDateString = null;
-        if(form.getField("endDate") != null)
+        if ( form.getField("endDate") != null )
         {
             endDateString = form.getField("endDate").getValue();
             endDate = new DateTime(endDateString);
@@ -144,7 +143,7 @@ public class TimelineRestServiceImpl
     {
         try
         {
-            Timeline res = this.timelineService.getTimeline(new BigInteger(userId));
+            Timeline res = this.timelineService.getTimeline(new Long(userId));
             if ( res != null )
             {
                 return this.gson.toJson(new RestServiceResponse<Timeline>(Status.SUCCESS.name(), null, null, res));

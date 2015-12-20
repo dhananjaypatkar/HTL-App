@@ -3,10 +3,7 @@
  */
 package com.healthline.services.impl;
 
-import java.util.UUID;
-
 import com.healthline.dao.api.IUserServiceDao;
-import com.healthline.dao.impl.UserServiceDaoImpl;
 import com.healthline.entity.User;
 import com.healthline.services.api.IUserService;
 

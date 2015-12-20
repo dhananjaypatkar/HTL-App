@@ -3,9 +3,6 @@
  */
 package com.healthline.dao.impl;
 
-import java.math.BigInteger;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -19,10 +16,9 @@ import javax.annotation.Resource;
 
 import org.joda.time.DateTime;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
@@ -42,23 +38,27 @@ public class TimelineServiceDaoImpl
         implements ITimelineServiceDao
 {
 
-    private JdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcTemplate jdbcTemplate;
 
     @Resource(name = "dbQueries")
-    private Properties   dbQueries;
+    private Properties                 dbQueries;
 
     /*
      * (non-Javadoc)
      * @see com.healthline.dao.api.ITimelineServiceDao#createTimeline(com.healthline.entity.Timeline)
      */
     @Override
-    public void createTimeline(final BigInteger userId, final Timeline timeline)
+    public void createTimeline(final Long userId, final Timeline timeline)
     {
-        // create.timeline.for.user=insert into htl_app.htl_timeline(description, user_id) values (?, ?)
+        // create.timeline.for.user=insert into htl_app.htl_timeline(description, user_id) values (:description, :user_id)
         final String query = this.dbQueries.getProperty("create.timeline.for.user");
-        final PreparedStatementCreator psc = getInsertTimelinePreparedStatement(userId, timeline, query);
+
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("description", timeline.getTitle().getText().getHeadline());
+        params.addValue("user_id", userId);
+
         // create timeline
-        this.jdbcTemplate.update(psc);
+        this.jdbcTemplate.update(query, params);
     }
 
     /*
@@ -66,17 +66,16 @@ public class TimelineServiceDaoImpl
      * @see com.healthline.dao.api.ITimelineServiceDao#getTimeline(java.lang.String)
      */
     @Override
-    public Timeline getTimeline(BigInteger userId)
+    public Timeline getTimeline(Long userId)
     {
         Timeline timeline = null;
         try
         {
-            // select.timeline.by.user.id=select * from htl_app.htl_timeline where user_id = ?
+            // select.timeline.by.user.id=select * from htl_app.htl_timeline where user_id = :user_id
+            MapSqlParameterSource params = new MapSqlParameterSource();
+            params.addValue("user_id", userId);
             timeline = this.jdbcTemplate.queryForObject(this.dbQueries.getProperty("select.timeline.by.user.id"),
-                    new Object[]
-                    {
-                        userId.longValue()
-                    }, new RowMapper<Timeline>()
+                    params, new RowMapper<Timeline>()
                     {
 
                         @Override
@@ -85,7 +84,7 @@ public class TimelineServiceDaoImpl
                         {
                             Timeline result = new Timeline();
                             Title title = new Title();
-                            result.setId(new BigInteger(res.getString("id")));
+                            result.setId(new Long(res.getString("id")));
                             title.setText(new Description(res.getString("description"), null));
                             result.setTitle(title);
                             return result;
@@ -94,14 +93,14 @@ public class TimelineServiceDaoImpl
                     });
             List<Event> events = getEventsOnTimeline(timeline.getId());
             timeline.setEvents(events);
-            List<BigInteger> eventIds = new ArrayList<>();
+            List<Long> eventIds = new ArrayList<>();
 
             for (Event event : events)
             {
                 eventIds.add(event.getId());
             }
             // get media info for each event
-            Map<BigInteger, Media> eventToMedia = getMediaForEvents(eventIds);
+            Map<Long, Media> eventToMedia = getMediaForEvents(eventIds);
             if ( !eventToMedia.isEmpty() )
             {
                 for (Event event : events)
@@ -123,23 +122,31 @@ public class TimelineServiceDaoImpl
      * @see com.healthline.dao.api.ITimelineServiceDao#addEventToTimeline(java.lang.String, com.healthline.entity.Event)
      */
     @Override
-    public void addEventToTimeline(final BigInteger timelineId, final Event event)
+    public void addEventToTimeline(final Long timelineId, final Event event)
     {
-        // create.event.on.timeline=insert into htl_app.htl_event(description, start_date, end_date, timeline_id) value (?, ?, ?, ?)
+        // create.event.on.timeline=insert into htl_app.htl_event(description, start_date, end_date, timeline_id) values (:description, :start_date, :end_date,
+        // :timeline_id)
         final String eventQuery = this.dbQueries.getProperty("create.event.on.timeline");
-        final PreparedStatementCreator eventPsc = getInsertEventPreparedStatement(timelineId, event, eventQuery);
+
+        MapSqlParameterSource eventParams = new MapSqlParameterSource();
+        eventParams.addValue("description", event.getText().getText());
+        eventParams.addValue("start_date", new Timestamp(event.getStartDate().getMillis()));
+        eventParams.addValue("end_date", new Timestamp(event.getEndDate().getMillis()));
+        eventParams.addValue("timeline_id", timelineId);
         final KeyHolder keyHolder = new GeneratedKeyHolder();
         // create event
-        this.jdbcTemplate.update(eventPsc, keyHolder);
+        this.jdbcTemplate.update(eventQuery, eventParams, keyHolder);
 
         final Long eventId = Long.valueOf(keyHolder.getKeys().get("id").toString());
 
-        // create.media.for.event=insert into htl_app.htl_media(url, event_id) values (?, ?)
+        // create.media.for.event=insert into htl_app.htl_media(url, event_id) values (:url, :event_id)
         final String mediaQuery = this.dbQueries.getProperty("create.media.for.event");
-        final PreparedStatementCreator mediaPsc = getInsertMediaPreparedStatement(event, eventId, mediaQuery);
 
+        MapSqlParameterSource mediaParams = new MapSqlParameterSource();
+        mediaParams.addValue("url", event.getMedia().getUrl());
+        mediaParams.addValue("event_id", eventId);
         // insert media
-        this.jdbcTemplate.update(mediaPsc);
+        this.jdbcTemplate.update(mediaQuery, mediaParams);
     }
 
     /*
@@ -147,7 +154,7 @@ public class TimelineServiceDaoImpl
      * @see com.healthline.dao.api.ITimelineServiceDao#deleteTimeline(java.lang.String)
      */
     @Override
-    public boolean deleteTimeline(BigInteger userId)
+    public boolean deleteTimeline(Long userId)
     {
         return false;
     }
@@ -157,23 +164,23 @@ public class TimelineServiceDaoImpl
      * @see com.healthline.dao.api.ITimelineServiceDao#deleteEventFromTimeline(java.lang.String, long)
      */
     @Override
-    public boolean deleteEventFromTimeline(BigInteger eventId)
+    public boolean deleteEventFromTimeline(Long eventId)
     {
         return false;
     }
 
     /*
      * (non-Javadoc)
-     * @see com.healthline.dao.api.ITimelineServiceDao#getEventsOnTimeline(java.math.BigInteger)
+     * @see com.healthline.dao.api.ITimelineServiceDao#getEventsOnTimeline(java.math.Long)
      */
     @Override
-    public List<Event> getEventsOnTimeline(BigInteger timelineId)
+    public List<Event> getEventsOnTimeline(Long timelineId)
     {
-        List<Event> events = this.jdbcTemplate.query(this.dbQueries.getProperty("select.event.by.timeline.id"),
-                new Object[]
-                {
-                    timelineId.longValue()
-                }, new RowMapper<Event>()
+        // select.event.by.timeline.id=select * from htl_app.htl_event where timeline_id = :timeline_id
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("timeline_id", timelineId);
+        List<Event> events = this.jdbcTemplate.query(this.dbQueries.getProperty("select.event.by.timeline.id"), params,
+                new RowMapper<Event>()
                 {
 
                     @Override
@@ -181,7 +188,7 @@ public class TimelineServiceDaoImpl
                             throws SQLException
                     {
                         Event event = new Event();
-                        event.setId(new BigInteger(res.getString("id")));
+                        event.setId(new Long(res.getString("id")));
                         event.setText(new Description(null, res.getString("description")));
                         DateTime eventDate = new DateTime(res.getTimestamp("start_date"));
                         event.setEventDate(new EventDate(eventDate.getYear(), eventDate.getMonthOfYear(), eventDate
@@ -197,157 +204,49 @@ public class TimelineServiceDaoImpl
      * @see com.healthline.dao.api.ITimelineServiceDao#getMediaForEvents(java.util.List)
      */
     @Override
-    public Map<BigInteger, Media> getMediaForEvents(List<BigInteger> events)
+    public Map<Long, Media> getMediaForEvents(List<Long> events)
     {
-        final Map<BigInteger, Media> result = new HashMap<>();
+        final Map<Long, Media> result = new HashMap<>();
         // won't happen
-        if(events.isEmpty())
+        if ( events.isEmpty() )
         {
             // no need to go to DB
             return result;
         }
-        
-        String params = "";
-        int i = 0;
-        for(;i < events.size()-1; i++)
+        List<Long> eventIds = new ArrayList<>();
+        for (Long eventId : events)
         {
-            params = params + events.get(i).longValue() + ",";
+            eventIds.add(eventId);
         }
-        params = params + events.get(i).longValue();
-        
-        this.jdbcTemplate.query(this.dbQueries.getProperty("select.media.by.event.ids").replace(":eventIds", params),new RowMapper<Media>()
-        {
-            @Override
-            public Media mapRow(ResultSet res, int col)
-                    throws SQLException
-            {
-                Media media = new Media();
-                media.setId(new BigInteger(res.getString("id")));
-                media.setUrl(res.getString("url"));
-                result.put(new BigInteger(res.getString("event_id")), media);
-                return media;
-            }
 
-        });
+        // select.media.by.event.ids=select * from htl_app.htl_media where event_id in (:event_ids)
+        MapSqlParameterSource mapParams = new MapSqlParameterSource();
+        mapParams.addValue("event_ids", eventIds);
+
+        this.jdbcTemplate.query(this.dbQueries.getProperty("select.media.by.event.ids"), mapParams,
+                new RowMapper<Media>()
+                {
+                    @Override
+                    public Media mapRow(ResultSet res, int col)
+                            throws SQLException
+                    {
+                        Media media = new Media();
+                        media.setId(new Long(res.getString("id")));
+                        media.setUrl(res.getString("url"));
+                        result.put(new Long(res.getString("event_id")), media);
+                        return media;
+                    }
+
+                });
 
         return result;
-    }
-
-    /**
-     * @param timelineId
-     * @param event
-     * @param query
-     * @return
-     */
-    private PreparedStatementCreator getInsertEventPreparedStatement(final BigInteger timelineId, final Event event,
-            final String query)
-    {
-        return new PreparedStatementCreator()
-        {
-            @Override
-            public PreparedStatement createPreparedStatement(final Connection con)
-                    throws SQLException
-            {
-                PreparedStatement ps = null;
-                try
-                {
-                    ps = con.prepareStatement(query, java.sql.Statement.RETURN_GENERATED_KEYS);
-                    int paramIndex = 0;
-                    ps.setString(++paramIndex, event.getText().getText());
-                    ps.setTimestamp(++paramIndex, new Timestamp(event.getStartDate().getMillis()));
-                    ps.setTimestamp(++paramIndex, new Timestamp(event.getEndDate().getMillis()));
-                    ps.setLong(++paramIndex, timelineId.longValue());
-                }
-                catch (SQLException exception)
-                {
-                    if ( ps != null )
-                    {
-                        ps.close();
-                    }
-                    throw exception;
-                }
-                return ps;
-            }
-        };
-    }
-
-    /**
-     * @param event
-     * @param eventId
-     * @param mediaQuery
-     * @return
-     */
-    private PreparedStatementCreator getInsertMediaPreparedStatement(final Event event, final Long eventId,
-            final String mediaQuery)
-    {
-        return new PreparedStatementCreator()
-        {
-            @Override
-            public PreparedStatement createPreparedStatement(final Connection con)
-                    throws SQLException
-            {
-                PreparedStatement ps = null;
-                try
-                {
-                    ps = con.prepareStatement(mediaQuery);
-                    int paramIndex = 0;
-                    ps.setString(++paramIndex, event.getMedia().getUrl());
-                    ps.setLong(++paramIndex, eventId);
-                }
-                catch (SQLException exception)
-                {
-                    if ( ps != null )
-                    {
-                        ps.close();
-                    }
-                    throw exception;
-                }
-                return ps;
-            }
-        };
-    }
-
-    /**
-     * @param userId
-     * @param timeline
-     * @param query
-     * @return
-     */
-    private PreparedStatementCreator getInsertTimelinePreparedStatement(final BigInteger userId,
-            final Timeline timeline, final String query)
-    {
-        return new PreparedStatementCreator()
-        {
-            @Override
-            public PreparedStatement createPreparedStatement(final Connection con)
-                    throws SQLException
-            {
-                PreparedStatement ps = null;
-                try
-                {
-                    ps = con.prepareStatement(query);
-                    int paramIndex = 0;
-                    ps.setString(++paramIndex, timeline.getTitle().getText().getHeadline());
-                    ps.setLong(++paramIndex, userId.longValue());
-                }
-                catch (SQLException exception)
-                {
-                    if ( ps != null )
-                    {
-                        ps.close();
-                    }
-                    throw exception;
-                }
-                return ps;
-            }
-        };
     }
 
     /**
      * 
      * @return jdbcTemplate
      */
-    public JdbcTemplate getJdbcTemplate()
+    public NamedParameterJdbcTemplate getJdbcTemplate()
     {
         return this.jdbcTemplate;
     }
@@ -356,7 +255,7 @@ public class TimelineServiceDaoImpl
      * 
      * @param jdbcTemplate the jdbcTemplate to set
      */
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate)
+    public void setJdbcTemplate(NamedParameterJdbcTemplate jdbcTemplate)
     {
         this.jdbcTemplate = jdbcTemplate;
     }

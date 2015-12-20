@@ -3,8 +3,6 @@
  */
 package com.healthline.dao.impl;
 
-import java.math.BigInteger;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -13,11 +11,10 @@ import java.util.Properties;
 import javax.annotation.Resource;
 
 import org.joda.time.DateTime;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import com.healthline.dao.api.IUserServiceDao;
 import com.healthline.entity.User;
@@ -30,10 +27,10 @@ public class UserServiceDaoImpl
         implements IUserServiceDao
 {
 
-    private JdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcTemplate jdbcTemplate;
 
     @Resource(name = "dbQueries")
-    private Properties   dbQueries;
+    private Properties                 dbQueries;
 
     /*
      * (non-Javadoc)
@@ -44,24 +41,15 @@ public class UserServiceDaoImpl
     @Override
     public User createNewUser(final User user)
     {
-        this.jdbcTemplate.execute(this.dbQueries.getProperty("create.user"), new PreparedStatementCallback<Boolean>()
-        {
+        // create.user=insert into htl_app.htl_user(fullname, email, last_login_date, city, region) values (:fullname, :email, :last_login_date, :city, :region)
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("fullname", user.getFullname());
+        params.addValue("email", user.getEmail());
+        params.addValue("last_login_date", new Timestamp(user.getLastLoginDate().getMillis()));
+        params.addValue("city", user.getCity());
+        params.addValue("region", user.getRegion());
 
-            @Override
-            public Boolean doInPreparedStatement(PreparedStatement ps)
-                    throws SQLException, DataAccessException
-            {
-                // insert into htl_app.htl_user(fullname, email, last_login_date, city, region) values (?, ?, ?, ?, ?)
-                int paramIndex = 0;
-                ps.setString(++paramIndex, user.getFullname());
-                ps.setString(++paramIndex, user.getEmail());
-                ps.setTimestamp(++paramIndex, new Timestamp(user.getLastLoginDate().getMillis()));
-                ps.setString(++paramIndex, user.getCity());
-                ps.setString(++paramIndex, user.getRegion());
-
-                return ps.execute();
-            }
-        });
+        this.jdbcTemplate.update(this.dbQueries.getProperty("create.user"), params);
 
         return user;
     }
@@ -76,25 +64,26 @@ public class UserServiceDaoImpl
         User user = null;
         try
         {
-            user = this.jdbcTemplate.queryForObject(this.dbQueries.getProperty("select.user.by.email"), new Object[]
-            {
-                email
-            }, new RowMapper<User>()
-            {
-                @Override
-                public User mapRow(ResultSet res, int col)
-                        throws SQLException
-                {
-                    User result = new User();
-                    result.setId(new BigInteger(res.getString("id")));
-                    result.setFullname(res.getString("fullname"));
-                    result.setEmail(res.getString("email"));
-                    result.setLastLoginDate(new DateTime(res.getTimestamp("last_login_date")));
-                    result.setCity(res.getString("city"));
-                    result.setRegion(res.getString("region"));
-                    return result;
-                }
-            });
+            // select.user.by.email=select * from htl_app.htl_user where email = :email
+            MapSqlParameterSource params = new MapSqlParameterSource();
+            params.addValue("email", email);
+            user = this.jdbcTemplate.queryForObject(this.dbQueries.getProperty("select.user.by.email"), params,
+                    new RowMapper<User>()
+                    {
+                        @Override
+                        public User mapRow(ResultSet res, int col)
+                                throws SQLException
+                        {
+                            User result = new User();
+                            result.setId(new Long(res.getString("id")));
+                            result.setFullname(res.getString("fullname"));
+                            result.setEmail(res.getString("email"));
+                            result.setLastLoginDate(new DateTime(res.getTimestamp("last_login_date")));
+                            result.setCity(res.getString("city"));
+                            result.setRegion(res.getString("region"));
+                            return result;
+                        }
+                    });
         }
         catch (EmptyResultDataAccessException e)
         {
@@ -129,7 +118,7 @@ public class UserServiceDaoImpl
      * 
      * @return jdbcTemplate
      */
-    public JdbcTemplate getJdbcTemplate()
+    public NamedParameterJdbcTemplate getJdbcTemplate()
     {
         return this.jdbcTemplate;
     }
@@ -138,7 +127,7 @@ public class UserServiceDaoImpl
      * 
      * @param jdbcTemplate the jdbcTemplate to set
      */
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate)
+    public void setJdbcTemplate(NamedParameterJdbcTemplate jdbcTemplate)
     {
         this.jdbcTemplate = jdbcTemplate;
     }

@@ -4,7 +4,6 @@
 package com.healthline.entity;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 
 import org.joda.time.DateTime;
 
@@ -22,7 +21,7 @@ public class User
     private static final long serialVersionUID = -2587942269908270351L;
 
     // basic user details
-    private BigInteger        id;
+    private Long              id;
     private String            email;
     private String            phoneNo;
     private String            fullname;
@@ -43,7 +42,7 @@ public class User
     /**
      * @return the id
      */
-    public BigInteger getId()
+    public Long getId()
     {
         return this.id;
     }
@@ -51,7 +50,7 @@ public class User
     /**
      * @param id the id to set
      */
-    public void setId(BigInteger id)
+    public void setId(Long id)
     {
         this.id = id;
     }

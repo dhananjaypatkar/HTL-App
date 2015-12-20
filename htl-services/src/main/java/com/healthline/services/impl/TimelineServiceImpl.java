@@ -1,7 +1,6 @@
 package com.healthline.services.impl;
 
 import java.io.InputStream;
-import java.math.BigInteger;
 
 import com.healthline.dao.api.ITimelineServiceDao;
 import com.healthline.entity.Description;
@@ -26,7 +25,7 @@ public class TimelineServiceImpl
      * @see com.healthline.services.api.ITimelineService#createTimeline()
      */
     @Override
-    public void createTimeline(BigInteger userId, String headline, String description)
+    public void createTimeline(Long userId, String headline, String description)
     {
         Title title = new Title();
         title.setText(new Description(headline, description));
@@ -40,7 +39,7 @@ public class TimelineServiceImpl
      * @see com.healthline.services.api.ITimelineService#addEventToTimeLine()
      */
     @Override
-    public void addEventToTimeLine(BigInteger timelineId, Event event, String fileName, InputStream fileData)
+    public void addEventToTimeLine(Long timelineId, Event event, String fileName, InputStream fileData)
     {
         Media media = new Media();
         if ( fileData != null )
@@ -57,7 +56,7 @@ public class TimelineServiceImpl
      * @see com.healthline.services.api.ITimelineService#getTimeline()
      */
     @Override
-    public Timeline getTimeline(BigInteger userId)
+    public Timeline getTimeline(Long userId)
     {
         return this.timelineServiceDao.getTimeline(userId);
     }

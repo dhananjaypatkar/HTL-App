@@ -1,7 +1,5 @@
 package com.healthline.entity;
 
-import java.math.BigInteger;
-
 import org.joda.time.DateTime;
 
 /**
@@ -12,7 +10,7 @@ import org.joda.time.DateTime;
 public class Event
 {
 
-    private BigInteger         id;
+    private Long               id;
 
     private Media              media;
 
@@ -26,7 +24,7 @@ public class Event
     /**
      * @return the id
      */
-    public BigInteger getId()
+    public Long getId()
     {
         return this.id;
     }
@@ -34,7 +32,7 @@ public class Event
     /**
      * @param id the id to set
      */
-    public void setId(BigInteger id)
+    public void setId(Long id)
     {
         this.id = id;
     }
