@@ -16,9 +16,9 @@ public interface ITimelineRestService
 
     String addEventToTimeLine(FormDataMultiPart form);
 
-    String getTimeline(String userId);
+    String getTimeline(Long userId);
 
-    String deleteTimeline(String userId);
+    String deleteTimeline(Long userId);
 
-    String deleteEventFromTimeline(String eventId);
+    String deleteEventFromTimeline(Long eventId);
 }

@@ -166,7 +166,10 @@ public class TimelineServiceDaoImpl
     @Override
     public boolean deleteEventFromTimeline(Long eventId)
     {
-        return false;
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("event_id", eventId);
+        this.jdbcTemplate.update(this.dbQueries.getProperty("delete.media.of.event"), params);
+        return this.jdbcTemplate.update(this.dbQueries.getProperty("delete.event.on.timeline"), params) != 0;
     }
 
     /*

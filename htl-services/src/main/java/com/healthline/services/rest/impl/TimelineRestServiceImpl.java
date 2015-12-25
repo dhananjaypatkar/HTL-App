@@ -139,11 +139,11 @@ public class TimelineRestServiceImpl
     @Path("/get-timeline")
     @GET
     @Override
-    public String getTimeline(@QueryParam("userId") String userId)
+    public String getTimeline(@QueryParam("userId") Long userId)
     {
         try
         {
-            Timeline res = this.timelineService.getTimeline(new Long(userId));
+            Timeline res = this.timelineService.getTimeline(userId);
             if ( res != null )
             {
                 return this.gson.toJson(new RestServiceResponse<Timeline>(Status.SUCCESS.name(), null, null, res));
@@ -169,7 +169,7 @@ public class TimelineRestServiceImpl
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Override
-    public String deleteTimeline(@FormParam("userId") String userId)
+    public String deleteTimeline(@FormParam("userId") Long userId)
     {
         return this.gson.toJson(new RestServiceResponse<Boolean>(Status.SUCCESS.name(), null, null, Boolean.TRUE));
     }
@@ -184,9 +184,25 @@ public class TimelineRestServiceImpl
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Override
-    public String deleteEventFromTimeline(@FormParam("eventId") String eventId)
+    public String deleteEventFromTimeline(@FormParam("eventId") Long eventId)
     {
-        return this.gson.toJson(new RestServiceResponse<Boolean>(Status.SUCCESS.name(), null, null, Boolean.TRUE));
+        try
+        {
+            boolean deleted = this.timelineService.deleteEventFromTimeline(eventId);
+            if ( deleted )
+            {
+                return this.gson.toJson(new RestServiceResponse<Boolean>(Status.SUCCESS.name(), null, null,
+                        Boolean.TRUE));
+            }
+            return this.gson.toJson(new RestServiceResponse<Boolean>(Status.ERROR.name(), null, "Event does not exist",
+                    Boolean.FALSE));
+        }
+        catch (Exception e)
+        {
+            return this.gson.toJson(new RestServiceResponse<Boolean>(Status.ERROR.name(), null,
+                    "There was some error at our end", Boolean.TRUE));
+        }
+
     }
 
     /**

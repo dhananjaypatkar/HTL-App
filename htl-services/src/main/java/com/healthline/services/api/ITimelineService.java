@@ -21,7 +21,7 @@ public interface ITimelineService
 
     Timeline getTimeline(Long userId);
 
-    String deleteTimeline();
+    boolean deleteTimeline();
 
-    String deleteEventFromTimeline();
+    boolean deleteEventFromTimeline(Long eventId);
 }

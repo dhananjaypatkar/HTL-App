@@ -66,9 +66,9 @@ public class TimelineServiceImpl
      * @see com.healthline.services.api.ITimelineService#deleteTimeline()
      */
     @Override
-    public String deleteTimeline()
+    public boolean deleteTimeline()
     {
-        return null;
+        return false;
     }
 
     /*
@@ -77,9 +77,9 @@ public class TimelineServiceImpl
      * com.healthline.services.api.ITimelineService#deleteEventFromTimeline()
      */
     @Override
-    public String deleteEventFromTimeline()
+    public boolean deleteEventFromTimeline(Long eventId)
     {
-        return null;
+        return this.timelineServiceDao.deleteEventFromTimeline(eventId);
     }
 
     /**
