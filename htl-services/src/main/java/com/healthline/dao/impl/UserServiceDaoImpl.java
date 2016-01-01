@@ -15,6 +15,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import com.healthline.dao.api.IUserServiceDao;
 import com.healthline.entity.User;
@@ -45,12 +47,13 @@ public class UserServiceDaoImpl
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("fullname", user.getFullname());
         params.addValue("email", user.getEmail());
-        params.addValue("last_login_date", new Timestamp(user.getLastLoginDate().getMillis()));
+        params.addValue("last_login_date", new Timestamp(new DateTime().getMillis()));
         params.addValue("city", user.getCity());
         params.addValue("region", user.getRegion());
 
-        this.jdbcTemplate.update(this.dbQueries.getProperty("create.user"), params);
-
+        final KeyHolder keyHolder = new GeneratedKeyHolder();
+        this.jdbcTemplate.update(this.dbQueries.getProperty("create.user"), params, keyHolder);
+        user.setId(Long.valueOf(keyHolder.getKeys().get("id").toString()));
         return user;
     }
 
