@@ -1,7 +1,5 @@
 package com.healthline.services.impl;
 
-import java.io.FileInputStream;
-
 import com.healthline.dao.api.ITimelineServiceDao;
 import com.healthline.entity.Description;
 import com.healthline.entity.Event;
@@ -9,6 +7,7 @@ import com.healthline.entity.Media;
 import com.healthline.entity.Timeline;
 import com.healthline.entity.Title;
 import com.healthline.services.api.ITimelineService;
+import com.healthline.storage.api.IDocumentStorageGateway;
 
 /**
  * @author Aniket
@@ -19,6 +18,7 @@ public class TimelineServiceImpl
 {
 
     private ITimelineServiceDao timelineServiceDao;
+    private IDocumentStorageGateway documentStorageGateway;
 
     /*
      * (non-Javadoc)
@@ -39,12 +39,14 @@ public class TimelineServiceImpl
      * @see com.healthline.services.api.ITimelineService#addEventToTimeLine()
      */
     @Override
-    public void addEventToTimeLine(Long timelineId, Event event, String fileName, FileInputStream fileData)
+    public void addEventToTimeLine(Long userId, Long timelineId, Event event, String fileName, byte[] content)
     {
         Media media = new Media();
-        if ( fileData != null )
+        if ( content != null )
         {
-            media.setUrl(fileName);
+            String newFileName = userId + "/" + fileName;
+            String mediUrl = this.documentStorageGateway.storeFile(newFileName, content);
+            media.setUrl(mediUrl);
         }
         event.setMedia(media);
         this.timelineServiceDao.addEventToTimeline(timelineId, event);
@@ -95,5 +97,21 @@ public class TimelineServiceImpl
     public void setTimelineServiceDao(ITimelineServiceDao timelineServiceDao)
     {
         this.timelineServiceDao = timelineServiceDao;
+    }
+
+    /**
+     * @return the documentStorageGateway
+     */
+    public IDocumentStorageGateway getDocumentStorageGateway()
+    {
+        return this.documentStorageGateway;
+    }
+
+    /**
+     * @param documentStorageGateway the documentStorageGateway to set
+     */
+    public void setDocumentStorageGateway(IDocumentStorageGateway documentStorageGateway)
+    {
+        this.documentStorageGateway = documentStorageGateway;
     }
 }

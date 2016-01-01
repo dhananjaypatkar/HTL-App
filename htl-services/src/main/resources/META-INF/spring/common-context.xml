@@ -1,16 +1,28 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
 	http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context-3.0.xsd
 	http://www.springframework.org/schema/util
-	http://www.springframework.org/schema/util/spring-util-3.0.xsd" >
-	
-	<context:property-placeholder location="classpath:db.properties" />
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<!-- 
+	loading below properties in old fashioned way so that #{systemEnvironment['HTL_CONFIG']} is accessible
+	<context:property-placeholder> is somehow NOT able to resolve file:#{systemEnvironment['HTL_CONFIG']}
+	-->
+	<bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>file:#{systemEnvironment['HTL_CONFIG']}/db.properties</value>
+				<value>file:#{systemEnvironment['HTL_CONFIG']}/storage.properties</value>
+			</list>
+		</property>
+	</bean>
 	<!-- loading properties file in spring container -->
-	<util:properties id="dbQueries" location="classpath:db-queries/db-queries.properties" />
-	
+	<bean id="dbQueries" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="location" value="file:#{systemEnvironment['HTL_CONFIG']}/db-queries.properties" />
+	</bean>
+
 </beans>

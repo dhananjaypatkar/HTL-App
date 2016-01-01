@@ -15,6 +15,7 @@
 
 	<bean id="timelineService" class="com.healthline.services.impl.TimelineServiceImpl">
 		<property name="timelineServiceDao" ref="timelineServiceDao" />
+		<property name="documentStorageGateway" ref="documentStorageGateway" />
 	</bean>
 
 </beans>

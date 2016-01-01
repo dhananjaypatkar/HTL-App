@@ -15,6 +15,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.media.multipart.ContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
@@ -83,6 +84,7 @@ public class TimelineRestServiceImpl
     public String addEventToTimeLine(FormDataMultiPart form)
     {
         Long timelineId = new Long(form.getField("timelineId").getValue());
+        Long userId = new Long(form.getField("userId").getValue());
         String description = form.getField("description").getValue();
         DateTime startDate = new DateTime(form.getField("startDate").getValue());
         DateTime endDate = startDate;
@@ -97,19 +99,21 @@ public class TimelineRestServiceImpl
         ContentDisposition headerOfFilePart = filePart.getContentDisposition();
         File fileData = filePart.getValueAs(File.class);
         String fileName = headerOfFilePart.getFileName();
-        
+
         final Event event = new Event();
         event.setStartDate(startDate);
         event.setEndDate(endDate);
         event.setText(new Description(null, description));
         try
         {
-            this.timelineService.addEventToTimeLine(timelineId, event, fileName, new FileInputStream(fileData));
+            this.timelineService.addEventToTimeLine(userId, timelineId, event, fileName,
+                    IOUtils.toByteArray(new FileInputStream(fileData)));
             return this.gson.toJson(new RestServiceResponse<Boolean>(Status.SUCCESS.name(), "Event added successfully",
                     null, Boolean.TRUE));
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             return this.gson.toJson(new RestServiceResponse<Boolean>(Status.ERROR.name(), null,
                     "There was some error at our end", Boolean.FALSE));
         }
