@@ -1,6 +1,6 @@
 package com.healthline.services.impl;
 
-import java.io.InputStream;
+import java.io.FileInputStream;
 
 import com.healthline.dao.api.ITimelineServiceDao;
 import com.healthline.entity.Description;
@@ -39,12 +39,11 @@ public class TimelineServiceImpl
      * @see com.healthline.services.api.ITimelineService#addEventToTimeLine()
      */
     @Override
-    public void addEventToTimeLine(Long timelineId, Event event, String fileName, InputStream fileData)
+    public void addEventToTimeLine(Long timelineId, Event event, String fileName, FileInputStream fileData)
     {
         Media media = new Media();
         if ( fileData != null )
         {
-            // TODO upload filedata to some server(say azure) and set the appropriate url below
             media.setUrl(fileName);
         }
         event.setMedia(media);

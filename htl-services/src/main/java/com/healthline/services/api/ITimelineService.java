@@ -3,7 +3,7 @@
  */
 package com.healthline.services.api;
 
-import java.io.InputStream;
+import java.io.FileInputStream;
 
 import com.healthline.entity.Event;
 import com.healthline.entity.Timeline;
@@ -17,7 +17,7 @@ public interface ITimelineService
 
     void createTimeline(Long userId, String headline, String description);
 
-    void addEventToTimeLine(Long timelineId, Event event, String fileName, InputStream fileData);
+    void addEventToTimeLine(Long timelineId, Event event, String fileName, FileInputStream fileData);
 
     Timeline getTimeline(Long userId);
 

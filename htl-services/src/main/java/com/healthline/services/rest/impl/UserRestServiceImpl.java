@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class UserRestServiceImpl
     @Autowired
     private Gson         gson;
 
-    @Path("/create")
+    @Path("")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Override
@@ -47,57 +47,36 @@ public class UserRestServiceImpl
         }
         catch (Exception e)
         {
-            e.printStackTrace();
-            return this.gson.toJson(new RestServiceResponse<User>(Status.ERROR.name(), null, "Exception Occured", ret));
+            return this.gson.toJson(new RestServiceResponse<User>(Status.ERROR.name(), null,
+                    "There was some error at our end", ret));
         }
         return this.gson.toJson(new RestServiceResponse<User>(Status.SUCCESS.name(), null, null, ret));
     }
 
-    @Path("/delete-user")
-    @POST
+    @Path("{email}")
+    @DELETE
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Override
-    public String deleteUser(@FormParam("userId") String userId)
+    public String deleteUser(@PathParam("email") String email)
     {
         try
         {
-            this.userService.deleteUser(userId);
+            this.userService.deleteUser(email);
         }
         catch (Exception e)
         {
-            e.printStackTrace();
-            return this.gson.toJson(new RestServiceResponse<Boolean>(Status.ERROR.name(), null, "Exception Occured",
-                    Boolean.FALSE));
+            return this.gson.toJson(new RestServiceResponse<Boolean>(Status.ERROR.name(), null,
+                    "There was some error at our end", Boolean.FALSE));
         }
 
         return this.gson.toJson(new RestServiceResponse<Boolean>(Status.SUCCESS.name(), "Deleted account successfully "
-                + userId, null, Boolean.TRUE));
+                + email, null, Boolean.TRUE));
     }
 
-    @Path("/update-user")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Override
-    public String updateUser(User user)
-    {
-        List<User> ret = new ArrayList<User>();
-        try
-        {
-            User res = this.userService.updateUser(user);
-            ret.add(res);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return this.gson.toJson(new RestServiceResponse<User>(Status.ERROR.name(), null, "Exception Occured", ret));
-        }
-        return this.gson.toJson(new RestServiceResponse<User>(Status.SUCCESS.name(), null, null, ret));
-    }
-
-    @Path("/get-user")
+    @Path("{email}")
     @GET
     @Override
-    public String getUser(@QueryParam("email") String email)
+    public String getUser(@PathParam("email") String email)
     {
         try
         {
@@ -111,7 +90,6 @@ public class UserRestServiceImpl
         }
         catch (Exception e)
         {
-            e.printStackTrace();
             return this.gson.toJson(new RestServiceResponse<Boolean>(Status.ERROR.name(), null,
                     "There was some error at our end", Boolean.FALSE));
         }

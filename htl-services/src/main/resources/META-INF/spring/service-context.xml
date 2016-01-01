@@ -1,21 +1,20 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
 	http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
- 
+
 	<context:component-scan base-package="com.healthline" />
-	
-	<bean id = "gson" class ="com.google.gson.Gson" />
-	
-	<bean id = "userService" class ="com.healthline.services.impl.UserServiceImpl" >
+
+	<bean id="gson" class="com.google.gson.Gson" />
+
+	<bean id="userService" class="com.healthline.services.impl.UserServiceImpl">
 		<property name="userServiceDao" ref="userServiceDao" />
-	</bean> 
-	
-	<bean id = "timelineService" class="com.healthline.services.impl.TimelineServiceImpl" >
-		<property name ="timelineServiceDao" ref="timelineServiceDao"/>
 	</bean>
-	
+
+	<bean id="timelineService" class="com.healthline.services.impl.TimelineServiceImpl">
+		<property name="timelineServiceDao" ref="timelineServiceDao" />
+	</bean>
+
 </beans>

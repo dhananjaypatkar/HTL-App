@@ -3,8 +3,8 @@
  */
 package com.healthline.services.rest.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.File;
+import java.io.FileInputStream;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -65,7 +65,6 @@ public class TimelineRestServiceImpl
         }
         catch (Exception e)
         {
-            e.printStackTrace();
             return this.gson.toJson(new RestServiceResponse<Boolean>(Status.ERROR.name(), null,
                     "There was some error at our end", Boolean.FALSE));
         }
@@ -96,38 +95,23 @@ public class TimelineRestServiceImpl
 
         FormDataBodyPart filePart = form.getField("file");
         ContentDisposition headerOfFilePart = filePart.getContentDisposition();
-        InputStream fileData = filePart.getValueAs(InputStream.class);
+        File fileData = filePart.getValueAs(File.class);
         String fileName = headerOfFilePart.getFileName();
-
+        
         final Event event = new Event();
         event.setStartDate(startDate);
         event.setEndDate(endDate);
         event.setText(new Description(null, description));
         try
         {
-            this.timelineService.addEventToTimeLine(timelineId, event, fileName, fileData);
+            this.timelineService.addEventToTimeLine(timelineId, event, fileName, new FileInputStream(fileData));
             return this.gson.toJson(new RestServiceResponse<Boolean>(Status.SUCCESS.name(), "Event added successfully",
                     null, Boolean.TRUE));
         }
         catch (Exception e)
         {
-            e.printStackTrace();
             return this.gson.toJson(new RestServiceResponse<Boolean>(Status.ERROR.name(), null,
                     "There was some error at our end", Boolean.FALSE));
-        }
-        finally
-        {
-            if ( fileData != null )
-            {
-                try
-                {
-                    fileData.close();
-                }
-                catch (IOException e)
-                {
-                    // log error
-                }
-            }
         }
 
     }
