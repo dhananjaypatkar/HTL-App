@@ -22,7 +22,7 @@ import com.healthline.services.api.IUserService;
 import com.healthline.services.rest.api.IUserRestService;
 
 @SuppressWarnings("javadoc")
-@Path("/user")
+@Path("/users")
 @Produces(MediaType.APPLICATION_JSON)
 public class UserRestServiceImpl
         implements IUserRestService
@@ -33,7 +33,7 @@ public class UserRestServiceImpl
     @Autowired
     private Gson         gson;
 
-    @Path("")
+    @Path("/")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Override

@@ -3,8 +3,6 @@
  */
 package com.healthline.services.api;
 
-import java.io.FileInputStream;
-
 import com.healthline.entity.Event;
 import com.healthline.entity.Timeline;
 

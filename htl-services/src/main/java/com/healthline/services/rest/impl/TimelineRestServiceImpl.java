@@ -7,12 +7,13 @@ import java.io.File;
 import java.io.FileInputStream;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.io.IOUtils;
@@ -36,7 +37,7 @@ import com.healthline.services.rest.api.ITimelineRestService;
  * 
  */
 
-@Path("/timeline")
+@Path("/timelines")
 @Produces(MediaType.APPLICATION_JSON)
 public class TimelineRestServiceImpl
         implements ITimelineRestService
@@ -51,7 +52,7 @@ public class TimelineRestServiceImpl
      * @see
      * com.healthline.services.rest.api.ITimelineRestService#createTimeline()
      */
-    @Path("/create")
+    @Path("/")
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Override
@@ -77,7 +78,7 @@ public class TimelineRestServiceImpl
      * com.healthline.services.rest.api.ITimelineRestService#addEventToTimeLine
      * ()
      */
-    @Path("/add-event")
+    @Path("/events")
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Override
@@ -113,7 +114,6 @@ public class TimelineRestServiceImpl
         }
         catch (Exception e)
         {
-            e.printStackTrace();
             return this.gson.toJson(new RestServiceResponse<Boolean>(Status.ERROR.name(), null,
                     "There was some error at our end", Boolean.FALSE));
         }
@@ -124,10 +124,10 @@ public class TimelineRestServiceImpl
      * (non-Javadoc)
      * @see com.healthline.services.rest.api.ITimelineRestService#getTimeline()
      */
-    @Path("/get-timeline")
+    @Path("{userId}")
     @GET
     @Override
-    public String getTimeline(@QueryParam("userId") Long userId)
+    public String getTimeline(@PathParam("userId") Long userId)
     {
         try
         {
@@ -142,7 +142,6 @@ public class TimelineRestServiceImpl
         }
         catch (Exception e)
         {
-            e.printStackTrace();
             return this.gson.toJson(new RestServiceResponse<Boolean>(Status.ERROR.name(), null,
                     "There was some error at our end", Boolean.FALSE));
         }
@@ -153,11 +152,10 @@ public class TimelineRestServiceImpl
      * @see
      * com.healthline.services.rest.api.ITimelineRestService#deleteTimeline()
      */
-    @Path("/delete-timeline")
-    @POST
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Path("{userId}")
+    @DELETE
     @Override
-    public String deleteTimeline(@FormParam("userId") Long userId)
+    public String deleteTimeline(@PathParam("userId") Long userId)
     {
         return this.gson.toJson(new RestServiceResponse<Boolean>(Status.SUCCESS.name(), null, null, Boolean.TRUE));
     }
@@ -168,11 +166,10 @@ public class TimelineRestServiceImpl
      * com.healthline.services.rest.api.ITimelineRestService#deleteEventFromTimeline
      * ()
      */
-    @Path("/delete-event")
-    @POST
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Path("/events/{eventId}")
+    @DELETE
     @Override
-    public String deleteEventFromTimeline(@FormParam("eventId") Long eventId)
+    public String deleteEventFromTimeline(@PathParam("eventId") Long eventId)
     {
         try
         {
