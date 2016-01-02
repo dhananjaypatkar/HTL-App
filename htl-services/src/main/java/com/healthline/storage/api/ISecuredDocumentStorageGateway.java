@@ -12,5 +12,5 @@ public interface ISecuredDocumentStorageGateway
 {
     String encryptAndStoreFile(String fileName, byte[] content, String password);
 
-    String retrieveAndDescryptFile(String url, String password);
+    byte[] retrieveAndDecryptFile(String url, String password);
 }

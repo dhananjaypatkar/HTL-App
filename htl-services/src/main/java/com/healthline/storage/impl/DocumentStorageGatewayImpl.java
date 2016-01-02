@@ -4,8 +4,11 @@
 package com.healthline.storage.impl;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
+import org.apache.commons.io.IOUtils;
 import org.jclouds.ContextBuilder;
 import org.jclouds.blobstore.BlobStore;
 import org.jclouds.blobstore.BlobStoreContext;
@@ -70,10 +73,37 @@ public class DocumentStorageGatewayImpl
      * @see com.healthline.storage.api.IDocumentStorageGateway#retrieveFile(java.lang.String)
      */
     @Override
-    public String retrieveFile(String url)
+    public byte[] retrieveFile(String url)
     {
-        // TODO Auto-generated method stub
-        return null;
+        
+        byte[] content = null;
+        try
+        {
+            BlobStoreContext context = getBlobStoreContext();
+            InputStream is = null;
+            BlobStore blobStore = context.getBlobStore();
+            String fileName = getFilenameFromURI(url, this.containerName);
+            if ( fileName != null && !fileName.isEmpty() )
+            {
+                Blob blob = blobStore.getBlob(this.containerName, fileName);
+                if ( blob != null && blob.getPayload() != null )
+                {
+                    is = blob.getPayload().getInput();
+                    if ( is != null )
+                    {
+                        content = IOUtils.toByteArray(is);
+                        is.close();
+                    }
+                }
+            }
+            context.close();
+        }
+        catch (IOException e)
+        {
+            // TODO log error
+        }
+        
+        return content;
     }
 
     /*
@@ -92,10 +122,10 @@ public class DocumentStorageGatewayImpl
      * @see com.healthline.storage.api.ISecuredDocumentStorageGateway#retrieveAndDescryptFile(java.lang.String, java.lang.String)
      */
     @Override
-    public String retrieveAndDescryptFile(String url, String password)
+    public byte[] retrieveAndDecryptFile(String url, String password)
     {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO decrypt before sending
+        return retrieveFile(url);
     }
 
     /**
@@ -123,6 +153,20 @@ public class DocumentStorageGatewayImpl
     private String getFileURI(String fileName, String container)
     {
         return FORWARD_SLASH + container + FORWARD_SLASH + fileName;
+    }
+
+    private String getFilenameFromURI(String url, String container)
+    {
+        String fileName = null;
+        if ( url != null )
+        {
+            String[] parts = url.split(FORWARD_SLASH + container + FORWARD_SLASH);
+            if ( parts.length >= 1 )
+            {
+                fileName = parts[1];
+            }
+        }
+        return fileName;
     }
 
     /**

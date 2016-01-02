@@ -1,5 +1,7 @@
 package com.healthline.services.impl;
 
+import java.util.UUID;
+
 import com.healthline.dao.api.ITimelineServiceDao;
 import com.healthline.entity.Description;
 import com.healthline.entity.Event;
@@ -8,6 +10,7 @@ import com.healthline.entity.Timeline;
 import com.healthline.entity.Title;
 import com.healthline.services.api.ITimelineService;
 import com.healthline.storage.api.IDocumentStorageGateway;
+import com.healthline.storage.api.ISecuredDocumentStorageGateway;
 
 /**
  * @author Aniket
@@ -17,8 +20,8 @@ public class TimelineServiceImpl
         implements ITimelineService
 {
 
-    private ITimelineServiceDao timelineServiceDao;
-    private IDocumentStorageGateway documentStorageGateway;
+    private ITimelineServiceDao     timelineServiceDao;
+    private ISecuredDocumentStorageGateway documentStorageGateway;
 
     /*
      * (non-Javadoc)
@@ -44,8 +47,9 @@ public class TimelineServiceImpl
         Media media = new Media();
         if ( content != null )
         {
-            String newFileName = userId + "/" + fileName;
-            String mediUrl = this.documentStorageGateway.storeFile(newFileName, content);
+            String passcode = UUID.randomUUID().toString();
+            String newFileName = userId + "/" + generateFileName(fileName, passcode);
+            String mediUrl = this.documentStorageGateway.encryptAndStoreFile(newFileName, content, passcode);
             media.setUrl(mediUrl);
         }
         event.setMedia(media);
@@ -82,6 +86,16 @@ public class TimelineServiceImpl
     {
         return this.timelineServiceDao.deleteEventFromTimeline(eventId);
     }
+    
+    private String generateFileName(String oldFileName, String passcode)
+    {
+        String newFileName = "";
+        int dot = oldFileName.lastIndexOf(".");
+        String name = oldFileName.substring(0, dot);
+        String extension = oldFileName.substring(dot);
+        newFileName = name + "_" + passcode + extension;
+        return newFileName;
+    }
 
     /**
      * @return timelineServiceDao
@@ -110,8 +124,9 @@ public class TimelineServiceImpl
     /**
      * @param documentStorageGateway the documentStorageGateway to set
      */
-    public void setDocumentStorageGateway(IDocumentStorageGateway documentStorageGateway)
+    public void setDocumentStorageGateway(ISecuredDocumentStorageGateway documentStorageGateway)
     {
         this.documentStorageGateway = documentStorageGateway;
     }
+
 }

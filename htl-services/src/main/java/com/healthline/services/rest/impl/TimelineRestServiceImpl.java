@@ -189,7 +189,7 @@ public class TimelineRestServiceImpl
         }
 
     }
-
+    
     /**
      * @return the timelineService
      */

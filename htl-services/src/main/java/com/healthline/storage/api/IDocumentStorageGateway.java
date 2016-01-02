@@ -11,5 +11,5 @@ public interface IDocumentStorageGateway
 {
     String storeFile(String fileName, byte[] content);
 
-    String retrieveFile(String url);
+    byte[] retrieveFile(String url);
 }
